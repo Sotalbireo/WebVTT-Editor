@@ -1,0 +1,23 @@
+{
+  "name": "WebVTT-Editor",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "prestart": "tsc -p .",
+    "test": "tsc -p . --noEmit"
+  },
+  "author": "Sota SASAKI",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "npm-tasks": "^1.4.4"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.4.31",
+    "@types/lodash": "^4.14.50",
+    "@types/node": "^6.0.60",
+    "electron": "^1.4.14"
+  }
+}

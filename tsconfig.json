@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "alwaysStrict": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "preserve",
+        "lib": [
+            "dom",
+            "es2017",
+            "scripthost"
+        ],
+        "listFiles": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "preserveConstEnums": true,
+        "pretty": true,
+        "removeComments": true,
+        "strictNullChecks": true,
+        "sourceMap": false,
+        "target": "es6"
+    },
+    "include": [
+        "app.ts",
+        "**/page.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
