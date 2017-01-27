@@ -1,15 +1,26 @@
 {
   "name": "WebVTT-Editor",
   "version": "0.0.1",
-  "description": "",
+  "description": "The editor to create WebVTT how subtitles at html5 video.",
+  "keywords": [
+    "html5",
+    "WebVTT",
+    "subtitles",
+    "electron"
+  ],
+  "author": "Sota SASAKI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sotalbireo/webvtt-editor.git"
+  },
+  "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
   "main": "app.js",
   "scripts": {
     "start": "electron .",
     "prestart": "tsc -p .",
     "test": "tsc -p . --noEmit"
   },
-  "author": "Sota SASAKI",
-  "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.4",
     "npm-tasks": "^1.4.4"

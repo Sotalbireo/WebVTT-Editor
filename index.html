@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scaleable=no">
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<style type="text/css">
+		.container{width:100%;margin-bottom:15px;}
+		video{border:2px solid #ccc;padding:5px;}
+		.console{vertical-align:top;padding:5px;padding-left:15px;}
+	</style>
+	<script>require('./page.js')</script>
+</head>
+<body>
+	<header class="navbar navbar-light mb-3" style="background-color:#e3f2fd"><div class="container my-0">
+		<h1 class="navbar-bland mb-0 text-primary">WebVTT Editor</h1>
+	</div></header>
+
+
+
+	<div id="Body" class="container">
+	<table style="width:100%">
+		<col width="60%">
+	<tbody>
+		<tr>
+			<td>
+				<video controls loop poster="data/placehold.png" preload="auto" width="100%" height="auto" crossorigin="anonymous">
+					<source src="data/video.mp4" type="video/mp4">
+					<track label="Japanese" kind="subtitles" src="./subtitle.ja.vtt" srclang="ja" default></track>
+				</video>
+			</td>
+			<td class="console">
+				<p style="font-size:2em;white-space:nowrap;text-align:justify;"><span id="CurrentTime">00:00:00</span> / <span id="TotalTime">00:00:00</span></p>
+				<div class="mb-3" style="position:relative">
+					<button id="Prev10" class="btn btn-outline-info" style="width:30%">&lt;&lt; 10s</button>
+					<button id="StartPause" class="btn btn-outline-primary py-1" style="width:60%;font-size:1.5rem">&#9199;</button>
+				</div>
+				<button id="Append" class="btn btn-primary btn-block mb-2">Append start time</button>
+				<button id="Overwrite" class="btn btn-outline-danger btn-block">Overwrite File</button>
+			</td>
+		</tr>
+		<tr><td colspan=2 id="Textarea"><textarea class="form-control" rows=3 style="height:100%;"></textarea></td></tr>
+	</tbody>
+	</table>
+	</div>
+
+
+</body>
+</html>
