@@ -1,7 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
 const arrow = ' --> '
-const prefix = 'WEBVTT'
 const filePath = path.join(__dirname, 'subtitle.ja.vtt')
 let hogefuga = 1
 
@@ -48,7 +47,7 @@ ${formatTime(getCurrentTime(), true)}${arrow}`
 }
 
 let overwriteFile = ()=>{
-	if(confirm('Overwrite, right?')){
+	if(confirm('Overwrite, right?\nIf Ok then this Page will Reload.')){
 		let data = document.querySelectorAll('textarea')[0].value
 		fs.writeFile(filePath, data, (err:any)=>{
 			if(err) throw err
@@ -70,12 +69,12 @@ const textareaResize = ()=>{
  */
 let preInit = ()=>{
 	if(!isExistFile(filePath)){
-		const data = `${prefix}
+		const data = `WEBVTT
 
 000:00.000${arrow}000:05.999
 This is "subtitle.ja.vtt"
 `
-		fs.writeFile(filePath, data, (err:any,msg:any)=>{
+		fs.writeFile(filePath, data, (err:any)=>{
 			if(err){ throw err
 			}else{
 				location.reload(true)
@@ -87,8 +86,8 @@ This is "subtitle.ja.vtt"
 
 let Init = ()=>{
 
-	setTotalTime()
 	textareaResize()
+	setTotalTime()
 
 	document.querySelectorAll('#StartPause')[0].addEventListener('click',startPause,false)
 	document.querySelectorAll('#Prev10')[0].addEventListener('click',prev10s,false)
