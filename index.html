@@ -2,13 +2,16 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scaleable=no">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1,maximum-scale=1.6,user-scalable=no">
 	<title></title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<style type="text/css">
-		.container{width:100%;margin-bottom:15px;}
+		body{overflow:hidden;}
+		.container{width:100%;}
 		video{border:2px solid #ccc;padding:5px;}
 		.console{vertical-align:top;padding:5px;padding-left:15px;}
+		#Textarea{padding-bottom:0;}
+		.lh-1{line-height:1!important}
 	</style>
 	<script>require('./page.js')</script>
 </head>
@@ -20,12 +23,12 @@
 
 
 	<div id="Body" class="container">
-	<table style="width:100%">
+	<table class="w-100">
 		<col width="60%">
 	<tbody>
 		<tr>
 			<td>
-				<video controls loop poster="data/placehold.png" preload="auto" width="100%" height="auto" crossorigin="anonymous">
+				<video controls poster="assets/placehold.png" preload="auto" width="100%" height="auto" crossorigin="anonymous">
 					<source src="data/video.mp4" type="video/mp4">
 					<track label="Japanese" kind="subtitles" src="./subtitle.ja.vtt" srclang="ja" default></track>
 				</video>
@@ -33,14 +36,15 @@
 			<td class="console">
 				<p style="font-size:2em;white-space:nowrap;text-align:justify;"><span id="CurrentTime">00:00:00</span> / <span id="TotalTime">00:00:00</span></p>
 				<div class="mb-3" style="position:relative">
-					<button id="Prev10" class="btn btn-outline-info" style="width:30%">&lt;&lt; 10s</button>
-					<button id="StartPause" class="btn btn-outline-primary py-1" style="width:60%;font-size:1.5rem">&#9199;</button>
+					<button id="Prev10" class="btn btn-outline-info py-1 lh-1" style="width:30%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg> 10s</button>
+					<button id="StartPause" class="btn btn-outline-primary py-1 lh-1" style="width:38%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
+					<button id="Fwd10" class="btn  btn-sm btn-outline-info lh-1" style="width:25%"><svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg> 10s</button>
 				</div>
 				<button id="Append" class="btn btn-primary btn-block mb-2">Append start time</button>
 				<button id="Overwrite" class="btn btn-outline-danger btn-block">Overwrite File</button>
 			</td>
 		</tr>
-		<tr><td colspan=2 id="Textarea"><textarea class="form-control" rows=3 style="height:100%;"></textarea></td></tr>
+		<tr><td colspan=2 id="Textarea"><textarea class="form-control" style="height:100%;"></textarea></td></tr>
 	</tbody>
 	</table>
 	</div>

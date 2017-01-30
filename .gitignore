@@ -2,6 +2,6 @@ node_modules/
 *.js
 *.map
 
-data/
+
 *.vtt
-*.mp4
+video.mp4

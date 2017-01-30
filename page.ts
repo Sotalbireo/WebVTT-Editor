@@ -3,63 +3,70 @@ import * as path from 'path'
 const arrow = ' --> '
 const filePath = path.join(__dirname, 'subtitle.ja.vtt')
 let hogefuga = 1
+let video :HTMLVideoElement
+
+
 
 const formatTime = (t:number, f=false)=>{
 	let h  = ('0' + Math.floor(t/3600)%60).slice(-2)
 	let m  = ('0' + Math.floor(t/60)%60).slice(-2)
-	let hm = ('00' + Math.floor(t/60)).slice(-3)
-	let s  = ('0' + Math.floor(t*1000%60000)/1000).slice(-6)
-	return (f)? `${hm}:${s}`: `${h}:${m}:${s.slice(0,2)}`
+	let s  = ('0' + Math.floor(t)%60).slice(-2)
+	return (f)? `${h}:${m}:${s}.${(Math.floor(t*100%6000) + '0').slice(-3)}`: `${h}:${m}:${s}`
 }
 let getCurrentTime = (indent=0)=>{
-	return document.querySelectorAll('video')[0].currentTime + indent
+	return video.currentTime + indent
 }
 let setCurrentTime = ()=>{
-	setTimeout((document.querySelectorAll('#CurrentTime')[0].textContent = formatTime(getCurrentTime(), false)), 200)
+	document.getElementById('CurrentTime')!.textContent = formatTime(getCurrentTime())
 }
 let setTotalTime = ()=>{
-	let v = document.querySelectorAll('video')[0]
-	v.addEventListener("loadedmetadata", function() {
-		let d = formatTime(v.duration)
-		document.querySelectorAll('#TotalTime')[0].textContent = d.substr(0, d.length-2);
+	video.addEventListener("loadedmetadata", function() {
+		document.getElementById('TotalTime')!.textContent = formatTime(video.duration)
 	}, false);
 }
 
 let startPause = ()=>{
-	let v = document.querySelectorAll('video')[0]
-	if(v.paused || v.ended){
-		v.play()
+	if(video.paused || video.ended){
+		video.play()
 	}else{
-		v.pause()
+		video.pause()
 	}
-}
-let prev10s = ()=>{
-	let v = document.querySelectorAll('video')[0]
-	v.currentTime -= 10
 }
 
 let appendTime = ()=>{
-	let dom = document.querySelectorAll('textarea')[0]
+	let dom = document.getElementsByTagName('textarea')[0]
 	dom.textContent += `${formatTime(getCurrentTime(-0.5), true)}
 Loem ipsum: ${hogefuga++}
 
-${formatTime(getCurrentTime(), true)}${arrow}`
+${formatTime(getCurrentTime(-0.1), true)}${arrow}`
 }
+
+let timeSetter = (e:KeyboardEvent)=>{
+	if(e.key.toLowerCase()==='q') {
+		console.log('q')
+	}else if(e.key.toLowerCase()==='e'){
+		console.log('e')
+	}
+}
+
+
 
 let overwriteFile = ()=>{
 	if(confirm('Overwrite, right?\nIf Ok then this Page will Reload.')){
-		let data = document.querySelectorAll('textarea')[0].value
+		let data = document.getElementsByTagName('textarea')[0].value
 		fs.writeFile(filePath, data, (err:any)=>{
-			if(err) throw err
+			if(err){ throw err
+			}else{ location.reload(true)
+			}
 		})
 	}
 }
 
 const textareaResize = ()=>{
-	let d = document.querySelectorAll('#Textarea')[0]
+	let d = document.getElementById('Textarea')!
 	const h = window.innerHeight
 	const rect = d.getBoundingClientRect()
-	d.setAttribute('height', (h - 15 - rect.top) + 'px')
+	d.setAttribute('height', (h - 30 - rect.top) + 'px')
 }
 
 
@@ -69,11 +76,7 @@ const textareaResize = ()=>{
  */
 let preInit = ()=>{
 	if(!isExistFile(filePath)){
-		const data = `WEBVTT
-
-000:00.000${arrow}000:05.999
-This is "subtitle.ja.vtt"
-`
+		const data = fs.readFileSync(path.join(__dirname, 'assets', 'sample.vtt.txt'), 'utf8')
 		fs.writeFile(filePath, data, (err:any)=>{
 			if(err){ throw err
 			}else{
@@ -86,17 +89,21 @@ This is "subtitle.ja.vtt"
 
 let Init = ()=>{
 
+	video = document.getElementsByTagName('video')[0]
 	textareaResize()
 	setTotalTime()
 
-	document.querySelectorAll('#StartPause')[0].addEventListener('click',startPause,false)
-	document.querySelectorAll('#Prev10')[0].addEventListener('click',prev10s,false)
-	document.querySelectorAll('#Overwrite')[0].addEventListener('click',overwriteFile,false)
-	document.querySelectorAll('#Append')[0].addEventListener('click',appendTime,false)
+	document.getElementById('StartPause')!.addEventListener('click',startPause,false)
+	document.getElementById('Prev10')!.addEventListener('click',(()=>{video.currentTime -= 10}),false)
+	document.getElementById('Fwd10')!.addEventListener('click',(()=>{video.currentTime += 10}),false)
+	document.getElementById('Overwrite')!.addEventListener('click',overwriteFile,false)
+	document.getElementById('Append')!.addEventListener('click',appendTime,false)
+	document.getElementsByTagName('table')[0].addEventListener('keypress', timeSetter, false)
+	document.getElementById('Textarea')!.removeEventListener('keypress', timeSetter, false)
 
-	document.querySelectorAll('textarea')[0].innerText = fs.readFileSync(filePath,'utf8')
+	document.getElementsByTagName('textarea')[0].innerText = fs.readFileSync(filePath,'utf8')
 
-	document.querySelectorAll('video')[0].addEventListener('timeupdate', setCurrentTime, false)
+	video.addEventListener('timeupdate', setCurrentTime, false)
 	window.addEventListener('resize', textareaResize, false)
 }
 
@@ -132,7 +139,8 @@ function isExistFile(file:string){
 			return false
 		}else{
 			console.error(err)
+			return false
 		}
 	}
-	return false
+
 }

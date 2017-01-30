@@ -5,6 +5,15 @@ const BrowserWindow = electron.BrowserWindow
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
+// const mimeTypes = {
+// 	"html": "text/html",
+// 	"png": "image/png",
+// 	"js": "text/javascript",
+// 	"css": "text/css",
+// 	"txt": "text/plain",
+// 	"vtt": "text/vtt",
+// 	"mp4": "video/mp4"
+// }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
