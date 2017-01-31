@@ -1,8 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-const arrow = ' --> '
 const filePath = path.join(__dirname, 'subtitle.ja.vtt')
-let hogefuga = 1
 let video :HTMLVideoElement
 
 
@@ -33,19 +31,26 @@ let startPause = ()=>{
 	}
 }
 
-let appendTime = ()=>{
+let appendBegin = ()=>{
 	let dom = document.getElementsByTagName('textarea')[0]
-	dom.textContent += `${formatTime(getCurrentTime(-0.5), true)}
-Loem ipsum: ${hogefuga++}
-
-${formatTime(getCurrentTime(-0.1), true)}${arrow}`
+	dom.value += `${formatTime(getCurrentTime(), true)} --> `
+}
+let appendEnd = ()=>{
+	let dom = document.getElementsByTagName('textarea')[0]
+	dom.value += `${formatTime(getCurrentTime(), true)}
+Loem ipsum ${Math.floor(Math.random()*100000)}\n\n`
 }
 
-let timeSetter = (e:KeyboardEvent)=>{
-	if(e.key.toLowerCase()==='q') {
-		console.log('q')
-	}else if(e.key.toLowerCase()==='e'){
-		console.log('e')
+let keyboardEvents = (e:KeyboardEvent)=>{
+	if(/textarea/i.test(e.srcElement!.tagName)) return
+
+	switch (e.key.toLowerCase()) {
+		case 'q':
+			appendBegin()
+			break;
+		case 'e':
+			appendEnd()
+			break;
 	}
 }
 
@@ -97,11 +102,12 @@ let Init = ()=>{
 	document.getElementById('Prev10')!.addEventListener('click',(()=>{video.currentTime -= 10}),false)
 	document.getElementById('Fwd10')!.addEventListener('click',(()=>{video.currentTime += 10}),false)
 	document.getElementById('Overwrite')!.addEventListener('click',overwriteFile,false)
-	document.getElementById('Append')!.addEventListener('click',appendTime,false)
-	document.getElementsByTagName('table')[0].addEventListener('keypress', timeSetter, false)
-	document.getElementById('Textarea')!.removeEventListener('keypress', timeSetter, false)
+	document.getElementById('AppendBegin')!.addEventListener('click',appendBegin,false)
+	document.getElementById('AppendEnd')!.addEventListener('click',appendEnd,false)
+	document.addEventListener('keypress', keyboardEvents, false)
+	document.getElementsByTagName('textarea')[0].removeEventListener('keypress', keyboardEvents, false)
 
-	document.getElementsByTagName('textarea')[0].innerText = fs.readFileSync(filePath,'utf8')
+	document.getElementsByTagName('textarea')[0].value = fs.readFileSync(filePath,'utf8')
 
 	video.addEventListener('timeupdate', setCurrentTime, false)
 	window.addEventListener('resize', textareaResize, false)
