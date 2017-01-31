@@ -9,7 +9,7 @@ const formatTime = (t:number, f=false)=>{
 	let h  = ('0' + Math.floor(t/3600)%60).slice(-2)
 	let m  = ('0' + Math.floor(t/60)%60).slice(-2)
 	let s  = ('0' + Math.floor(t)%60).slice(-2)
-	return (f)? `${h}:${m}:${s}.${(Math.floor(t*100%6000) + '0').slice(-3)}`: `${h}:${m}:${s}`
+	return (f)? `${h}:${m}:${s}.${Math.floor(t*1000%60000).toString().slice(-3)}`: `${h}:${m}:${s}`
 }
 let getCurrentTime = (indent=0)=>{
 	return video.currentTime + indent
@@ -69,15 +69,15 @@ let overwriteFile = ()=>{
 
 const textareaResize = ()=>{
 	let d = document.getElementById('Textarea')!
+	let r = d.getBoundingClientRect()
 	const h = window.innerHeight
-	const rect = d.getBoundingClientRect()
-	d.setAttribute('height', (h - 30 - rect.top) + 'px')
+	d.setAttribute('height', (h - 30 - r.top) + 'px')
 }
 
 
 
 /**
- * INITS
+ * Inits
  */
 let preInit = ()=>{
 	if(!isExistFile(filePath)){
@@ -93,7 +93,6 @@ let preInit = ()=>{
 }
 
 let Init = ()=>{
-
 	video = document.getElementsByTagName('video')[0]
 	textareaResize()
 	setTotalTime()
@@ -141,12 +140,8 @@ function isExistFile(file:string){
 		fs.statSync(file)
 		return true
 	} catch(err) {
-		if(err.code === 'ENOENT'){
-			return false
-		}else{
-			console.error(err)
-			return false
-		}
+		if(err.code !== 'ENOENT') console.error(err)
+		return false
 	}
 
 }
