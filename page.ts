@@ -20,7 +20,7 @@ let setCurrentTime = ()=>{
 let setTotalTime = ()=>{
 	video.addEventListener("loadedmetadata", function() {
 		document.getElementById('TotalTime')!.textContent = formatTime(video.duration)
-	}, false);
+	}, false)
 }
 
 let startPause = ()=>{
@@ -31,9 +31,13 @@ let startPause = ()=>{
 	}
 }
 
+let videoSeek = (s:number)=>{
+	video.currentTime += s
+}
+
 let appendBegin = ()=>{
 	let dom = document.getElementsByTagName('textarea')[0]
-	dom.value += `${formatTime(getCurrentTime(), true)} --> `
+	dom.value += `${formatTime(getCurrentTime(-0.01), true)} --> `
 }
 let appendEnd = ()=>{
 	let dom = document.getElementsByTagName('textarea')[0]
@@ -46,11 +50,20 @@ let keyboardEvents = (e:KeyboardEvent)=>{
 
 	switch (e.key.toLowerCase()) {
 		case 'q':
-			appendBegin()
-			break;
+			videoSeek(-10)
+			break
 		case 'e':
+			videoSeek(10)
+			break
+		case ' ':
+			startPause()
+			break
+		case 'i':
+			appendBegin()
+			break
+		case 'o':
 			appendEnd()
-			break;
+			break
 	}
 }
 
@@ -98,13 +111,12 @@ let Init = ()=>{
 	setTotalTime()
 
 	document.getElementById('StartPause')!.addEventListener('click',startPause,false)
-	document.getElementById('Prev10')!.addEventListener('click',(()=>{video.currentTime -= 10}),false)
-	document.getElementById('Fwd10')!.addEventListener('click',(()=>{video.currentTime += 10}),false)
+	document.getElementById('Prev10')!.addEventListener('click',_$=>videoSeek(-10),false)
+	document.getElementById('Fwd10')!.addEventListener('click',_$=>videoSeek(10),false)
 	document.getElementById('Overwrite')!.addEventListener('click',overwriteFile,false)
 	document.getElementById('AppendBegin')!.addEventListener('click',appendBegin,false)
 	document.getElementById('AppendEnd')!.addEventListener('click',appendEnd,false)
-	document.addEventListener('keypress', keyboardEvents, false)
-	document.getElementsByTagName('textarea')[0].removeEventListener('keypress', keyboardEvents, false)
+	document.addEventListener('keydown', keyboardEvents, false)
 
 	document.getElementsByTagName('textarea')[0].value = fs.readFileSync(filePath,'utf8')
 
@@ -119,15 +131,13 @@ let Init = ()=>{
 /**
  * Run
  */
-let ready = (fn:any)=>{
-	if(document.readyState!=='loading'){
-		fn()
-	}else{
-		document.addEventListener('DOMContentLoaded',fn)
-	}
-}
 preInit()
-ready(Init)
+if(document.readyState!=='loading'){
+	Init()
+}else{
+	document.addEventListener('DOMContentLoaded',Init)
+}
+
 
 
 
