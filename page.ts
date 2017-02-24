@@ -1,157 +1,173 @@
 import * as fs from 'fs'
-import * as path from 'path'
-const filePath = path.join(__dirname, 'subtitle.ja.vtt')
-let video :HTMLVideoElement
+// import * as path from 'path'
+// const filePath = path.join(__dirname, 'subtitle.ja.vtt')
+
+let app      :Application
+let appRoute :ApplicationRoute
 
 
-
-const formatTime = (t:number, f=false)=>{
-	let h  = ('0' + Math.floor(t/3600)%60).slice(-2)
-	let m  = ('0' + Math.floor(t/60)%60).slice(-2)
-	let s  = ('0' + Math.floor(t)%60).slice(-2)
-	return (f)? `${h}:${m}:${s}.${Math.floor(t*1000%60000).toString().slice(-3)}`: `${h}:${m}:${s}`
-}
-let getCurrentTime = (indent=0)=>{
-	return video.currentTime + indent
-}
-let setCurrentTime = ()=>{
-	document.getElementById('CurrentTime')!.textContent = formatTime(getCurrentTime())
-}
-let setTotalTime = ()=>{
-	video.addEventListener("loadedmetadata", function() {
-		document.getElementById('TotalTime')!.textContent = formatTime(video.duration)
-	}, false)
-}
-
-let startPause = ()=>{
-	if(video.paused || video.ended){
-		video.play()
-	}else{
-		video.pause()
+class Video {
+	private video :HTMLVideoElement
+	constructor(_arg:{path:string,targ:string}) {
+		// this.video = document.getElementById(query)! as HTMLVideoElement
+		// this.video.addEventListener('timeupdate', this.updateCurrentTime)
 	}
-}
-
-let videoSeek = (s:number)=>{
-	video.currentTime += s
-}
-
-let appendBegin = ()=>{
-	let dom = document.getElementsByTagName('textarea')[0]
-	dom.value += `${formatTime(getCurrentTime(-0.01), true)} --> `
-}
-let appendEnd = ()=>{
-	let dom = document.getElementsByTagName('textarea')[0]
-	dom.value += `${formatTime(getCurrentTime(), true)}
-Loem ipsum ${Math.floor(Math.random()*100000)}\n\n`
-}
-
-let keyboardEvents = (e:KeyboardEvent)=>{
-	if(/textarea/i.test(e.srcElement!.tagName)) return
-
-	switch (e.key.toLowerCase()) {
-		case 'q':
-			videoSeek(-10)
-			break
-		case 'e':
-			videoSeek(10)
-			break
-		case ' ':
-			startPause()
-			break
-		case 'i':
-			appendBegin()
-			break
-		case 'o':
-			appendEnd()
-			break
+	formatTime(t:number, f=false) {
+		let h = ('0' + Math.floor(t/3600)%60).slice(-2)
+		let m = ('0' + Math.floor(t/60  )%60).slice(-2)
+		let s = ('0' + Math.floor(t     )%60).slice(-2)
+		return (f)? `${h}:${m}:${s}.${Math.floor(t*1000%60000).toString().slice(-3)}`: `${h}:${m}:${s}`
 	}
-}
-
-
-
-let overwriteFile = ()=>{
-	if(confirm('Overwrite, right?\nIf Ok then this Page will Reload.')){
-		let data = document.getElementsByTagName('textarea')[0].value
-		fs.writeFile(filePath, data, (err:any)=>{
-			if(err){ throw err
-			}else{ location.reload(true)
-			}
+	getCurrentTime(indent=0) {
+		return this.video.currentTime + indent
+	}
+	seek(s:number) {
+		this.video.currentTime += s
+	}
+	setTotalTime() {
+		this.video.addEventListener("loadedmetadata", ()=>{
+			document.getElementById('TotalTime')!.textContent = this.formatTime(this.video.duration)
 		})
 	}
-}
-
-const textareaResize = ()=>{
-	let d = document.getElementById('Textarea')!
-	let r = d.getBoundingClientRect()
-	const h = window.innerHeight
-	d.setAttribute('height', (h - 30 - r.top) + 'px')
-}
-
-
-
-/**
- * Inits
- */
-let preInit = ()=>{
-	if(!isExistFile(filePath)){
-		const data = fs.readFileSync(path.join(__dirname, 'assets', 'sample.vtt.txt'), 'utf8')
-		fs.writeFile(filePath, data, (err:any)=>{
-			if(err){ throw err
-			}else{
-				location.reload(true)
-			}
-
-		})
+	pp() {
+		if(this.video.paused || this.video.ended){
+			this.video.play()
+		}else{
+			this.video.pause()
+		}
+	}
+	updateCurrentTime() {
+		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
 	}
 }
 
-let Init = ()=>{
-	video = document.getElementsByTagName('video')[0]
-	textareaResize()
-	setTotalTime()
 
-	document.getElementById('StartPause')!.addEventListener('click',startPause,false)
-	document.getElementById('Prev10')!.addEventListener('click',_$=>videoSeek(-10),false)
-	document.getElementById('Fwd10')!.addEventListener('click',_$=>videoSeek(10),false)
-	document.getElementById('Overwrite')!.addEventListener('click',overwriteFile,false)
-	document.getElementById('AppendBegin')!.addEventListener('click',appendBegin,false)
-	document.getElementById('AppendEnd')!.addEventListener('click',appendEnd,false)
-	document.addEventListener('keydown', keyboardEvents, false)
 
-	document.getElementsByTagName('textarea')[0].value = fs.readFileSync(filePath,'utf8')
+class Terminal {
+	private dom:HTMLTextAreaElement
 
-	video.addEventListener('timeupdate', setCurrentTime, false)
-	window.addEventListener('resize', textareaResize, false)
+	constructor(arg:{path:string,targ:string}) {
+		this.dom = document.getElementById(arg.path) as HTMLTextAreaElement
+
+		// this.dom.value = fs.readFileSync(arg.path,'utf8')
+
+		// document.getElementById('Prev10')!.addEventListener('click',_$=>app.video.seek(-10))
+		// document.getElementById('StartPause')!.addEventListener('click',app.video.pp)
+		// document.getElementById('Fwd10')!.addEventListener('click',_$=>app.video.seek(10))
+		// document.getElementById('PutBegin')!.addEventListener('click',this.putBegin)
+		// document.getElementById('PutEnd')!.addEventListener('click',this.putEnd)
+
+	}
+	putBegin() {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(-0.01), true)} --> `
+	}
+	putEnd() {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoem ipsum ${Math.floor(Math.random()*100000)}\n\n`
+	}
+	resize() {
+		let d = document.getElementById('VttEditorFrame')!
+		let r = d.getBoundingClientRect()
+		d.setAttribute('height', (window.innerHeight - 30 - r.top) + 'px')
+	}
 }
 
 
 
+class Application {
+	private videoPath :string
+	private subtlPath :string
+	private videoTarg :string = 'Video'
+	private termTarg  :string = 'VttEditor'
+	public video :Video
+	private terminal :Terminal
 
+	constructor(_arg:any) {
+		this.video = new Video({path:this.videoPath, targ:this.videoTarg})
+		this.terminal = new Terminal({path:this.subtlPath, targ:this.termTarg})
+		document.addEventListener('keydown', this.keyEvents)
+		window.addEventListener('resize', this.terminal.resize)
+		document.getElementById('Write')!.addEventListener('click',this.writeFile)
+	}
+	static isExistFile(file:string) {
+		try {
+			fs.statSync(file)
+			return true
+		} catch(err) {
+			if(err.code !== 'ENOENT') console.error(err)
+			return false
+		}
+	}
+	private keyEvents(e:KeyboardEvent) {
+		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
+		switch (e.key.toLowerCase()) {
+			case 'q':
+				this.video.seek(-10)
+				break
+			case 'e':
+				this.video.seek(10)
+				break
+			case ' ':
+				this.video.pp()
+				break
+			case 'i':
+				this.terminal.putBegin()
+				break
+			case 'o':
+				this.terminal.putEnd()
+				break
+		}
+	}
+	private writeFile() {
+		let data = (document.getElementById('VttTerm')! as HTMLTextAreaElement).value
+		fs.writeFile(this.subtlPath, data, (err:any)=>{
+			if(err) throw err
+		})
+	}
+	viewOpenFile() {
+
+	}
+}
+
+class ApplicationRoute {
+	private _pageId:string
+	constructor(){
+		this.pageId = window.location.hash || ''
+	}
+	set pageId(str:string){
+		this._pageId = str
+	}
+	flow() {
+
+	}
+	changeHash(hash:string) {
+		event!.preventDefault()
+		window.location.assign('#'+hash)
+	}
+	isDisped(el:string, isDisp:boolean) {
+		document.getElementById(el)!.style.display = (isDisp)? 'block': 'none'
+	}
+	linkDummy() {
+		event!.preventDefault()
+		this.isDisped('dummylink', true)
+	}
+	reload() {
+		window.location.reload()
+	}
+	start() {
+		window.addEventListener('hashchange', this.flow)
+	}
+}
 
 /**
  * Run
  */
-preInit()
+let Init = ()=>{
+	appRoute = new ApplicationRoute()
+	app      = new Application({})
+	appRoute.start()
+}
 if(document.readyState!=='loading'){
 	Init()
 }else{
 	document.addEventListener('DOMContentLoaded',Init)
-}
-
-
-
-
-
-/**
- * Utilities
- */
-function isExistFile(file:string){
-	try {
-		fs.statSync(file)
-		return true
-	} catch(err) {
-		if(err.code !== 'ENOENT') console.error(err)
-		return false
-	}
-
 }
