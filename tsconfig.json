@@ -10,9 +10,11 @@
             "es2017",
             "scripthost"
         ],
+        "listEmittedFiles": true,
         "listFiles": false,
         "module": "commonjs",
         "moduleResolution": "node",
+        "newLine": "lf",
         "noEmitOnError": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,

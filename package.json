@@ -18,7 +18,7 @@
   "main": "app.js",
   "scripts": {
     "start": "electron .",
-    "prestart": "tsc -p .",
+    "compile": "tsc -p .",
     "test": "tsc -p . --noEmit"
   },
   "devDependencies": {
