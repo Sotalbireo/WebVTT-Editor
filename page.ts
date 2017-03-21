@@ -1,16 +1,17 @@
 import * as fs from 'fs'
-// import * as path from 'path'
-// const filePath = path.join(__dirname, 'subtitle.ja.vtt')
+import * as path from 'path'
+const filePath = path.join(__dirname, 'subtitle.ja.vtt')
 
 let app      :Application
 let appRoute :ApplicationRoute
 
 
-class Video {
+class VideoController {
 	private video :HTMLVideoElement
 	constructor(_arg:{path:string,targ:string}) {
-		// this.video = document.getElementById(query)! as HTMLVideoElement
-		// this.video.addEventListener('timeupdate', this.updateCurrentTime)
+		this.video = document.getElementById('Video')! as HTMLVideoElement
+		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
+		this.video.addEventListener('loadedmetadata', _=>this.setTotalTime())
 	}
 	formatTime(t:number, f=false) {
 		let h = ('0' + Math.floor(t/3600)%60).slice(-2)
@@ -25,9 +26,8 @@ class Video {
 		this.video.currentTime += s
 	}
 	setTotalTime() {
-		this.video.addEventListener("loadedmetadata", ()=>{
-			document.getElementById('TotalTime')!.textContent = this.formatTime(this.video.duration)
-		})
+		const el = 'TotalTime'
+		document.getElementById(el)!.textContent = this.formatTime(this.video.duration)
 	}
 	pp() {
 		if(this.video.paused || this.video.ended){
@@ -44,18 +44,18 @@ class Video {
 
 
 class Terminal {
-	private dom:HTMLTextAreaElement
+	private dom :HTMLTextAreaElement
 
-	constructor(arg:{path:string,targ:string}) {
-		this.dom = document.getElementById(arg.path) as HTMLTextAreaElement
+	constructor(_arg:{path:string,targ:string}) {
+		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-		// this.dom.value = fs.readFileSync(arg.path,'utf8')
+		this.dom.value = fs.readFileSync(filePath,'utf8')
 
-		// document.getElementById('Prev10')!.addEventListener('click',_$=>app.video.seek(-10))
-		// document.getElementById('StartPause')!.addEventListener('click',app.video.pp)
-		// document.getElementById('Fwd10')!.addEventListener('click',_$=>app.video.seek(10))
-		// document.getElementById('PutBegin')!.addEventListener('click',this.putBegin)
-		// document.getElementById('PutEnd')!.addEventListener('click',this.putEnd)
+		document.getElementById('Prev10')!.addEventListener('click',_=>app.video.seek(-10))
+		document.getElementById('PlayPause')!.addEventListener('click',_=>app.video.pp())
+		document.getElementById('Fwd10')!.addEventListener('click',_=>app.video.seek(10))
+		document.getElementById('PutBegin')!.addEventListener('click',_=>this.putBegin())
+		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
 
 	}
 	putBegin() {
@@ -65,11 +65,26 @@ class Terminal {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoem ipsum ${Math.floor(Math.random()*100000)}\n\n`
 	}
 	resize() {
-		let d = document.getElementById('VttEditorFrame')!
+		let d = document.getElementById('TextareaFrame')!
 		let r = d.getBoundingClientRect()
 		d.setAttribute('height', (window.innerHeight - 30 - r.top) + 'px')
 	}
 }
+
+
+
+// class OpenFile {
+// 	private video :string
+// 	private subtitle :string
+// 	constructor(args:{vid:string,sub:string}) {
+// 		this.video = args.vid
+// 		this.subtitle = args.sub
+// 		console.dir(this.showPath)
+// 	}
+// 	get showPath() {
+// 		return [this.video, this.subtitle]
+// 	}
+// }
 
 
 
@@ -78,15 +93,18 @@ class Application {
 	private subtlPath :string
 	private videoTarg :string = 'Video'
 	private termTarg  :string = 'VttEditor'
-	public video :Video
-	private terminal :Terminal
+	public video    :VideoController
+	public terminal :Terminal
 
 	constructor(_arg:any) {
-		this.video = new Video({path:this.videoPath, targ:this.videoTarg})
+		this.video = new VideoController({path:this.videoPath, targ:this.videoTarg})
 		this.terminal = new Terminal({path:this.subtlPath, targ:this.termTarg})
-		document.addEventListener('keydown', this.keyEvents)
-		window.addEventListener('resize', this.terminal.resize)
-		document.getElementById('Write')!.addEventListener('click',this.writeFile)
+		// this.video = new VideoController({path:this.videoPath, targ:this.videoTarg})
+		// this.terminal = new Terminal({path:this.subtlPath, targ:this.termTarg})
+		this.terminal.resize()
+		document.addEventListener('keydown', e=>this.keyEvents(e))
+		window.addEventListener('resize', _=>this.terminal.resize())
+		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 	}
 	static isExistFile(file:string) {
 		try {
@@ -130,8 +148,8 @@ class Application {
 
 class ApplicationRoute {
 	private _pageId:string
-	constructor(){
-		this.pageId = window.location.hash || ''
+	constructor(preset?:string){
+		this.pageId = preset || window.location.hash || ''
 	}
 	set pageId(str:string){
 		this._pageId = str
@@ -143,12 +161,12 @@ class ApplicationRoute {
 		event!.preventDefault()
 		window.location.assign('#'+hash)
 	}
-	isDisped(el:string, isDisp:boolean) {
+	isDisp(el:string, isDisp:boolean) {
 		document.getElementById(el)!.style.display = (isDisp)? 'block': 'none'
 	}
 	linkDummy() {
 		event!.preventDefault()
-		this.isDisped('dummylink', true)
+		this.isDisp('dummylink', true)
 	}
 	reload() {
 		window.location.reload()

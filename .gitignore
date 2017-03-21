@@ -1,7 +1,8 @@
 node_modules/
+npm-debug*
 WebVTT-Editor*/
 *.js
 *.map
 
 *.vtt
-video.mp4
+*.mp4

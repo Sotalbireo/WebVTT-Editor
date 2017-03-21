@@ -4,7 +4,7 @@
         "alwaysStrict": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "jsx": "preserve",
+        "jsx": "react",
         "lib": [
             "dom",
             "es2017",
@@ -31,6 +31,7 @@
     "include": [
         "app.ts",
         "**/page.ts"
+        // "**/pages.tsx"
     ],
     "exclude": [
         "node_modules"
