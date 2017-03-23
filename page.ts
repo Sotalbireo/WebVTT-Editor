@@ -14,10 +14,11 @@ class VideoController {
 		this.video.addEventListener('loadedmetadata', _=>this.setTotalTime())
 	}
 	formatTime(t:number, f=false) {
-		let h = ('0' + Math.floor(t/3600)%60).slice(-2)
-		let m = ('0' + Math.floor(t/60  )%60).slice(-2)
-		let s = ('0' + Math.floor(t     )%60).slice(-2)
-		return (f)? `${h}:${m}:${s}.${Math.floor(t*1000%60000).toString().slice(-3)}`: `${h}:${m}:${s}`
+		let h   = ('0'  + Math.floor(t/3600)%60).slice(-2)
+		let m   = ('0'  + Math.floor(t/60  )%60).slice(-2)
+		let s   = ('0'  + Math.floor(t     )%60).slice(-2)
+		let sss = ('00' + Math.floor(t%10*1000)).slice(-3)
+		return (f)? `${h}:${m}:${s}.${sss}`: `${h}:${m}:${s}`
 	}
 	getCurrentTime(indent=0) {
 		return this.video.currentTime + indent
@@ -58,8 +59,8 @@ class Terminal {
 		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
 
 	}
-	putBegin() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(-0.01), true)} --> `
+	putBegin(indent=-0.05) {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
 	}
 	putEnd() {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoem ipsum ${Math.floor(Math.random()*100000)}\n\n`
@@ -119,9 +120,11 @@ class Application {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
 		switch (e.key.toLowerCase()) {
 			case 'q':
+			case 'arrowleft':
 				this.video.seek(-10)
 				break
 			case 'e':
+			case 'arrowright':
 				this.video.seek(10)
 				break
 			case ' ':
@@ -136,8 +139,8 @@ class Application {
 		}
 	}
 	private writeFile() {
-		let data = (document.getElementById('VttTerm')! as HTMLTextAreaElement).value
-		fs.writeFile(this.subtlPath, data, (err:any)=>{
+		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
+		fs.writeFile(filePath, data, (err:any)=>{
 			if(err) throw err
 		})
 	}
