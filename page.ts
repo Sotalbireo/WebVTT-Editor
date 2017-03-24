@@ -23,19 +23,22 @@ class VideoController {
 	getCurrentTime(indent=0) {
 		return this.video.currentTime + indent
 	}
-	seek(s:number) {
-		this.video.currentTime += s
-	}
-	setTotalTime() {
-		const el = 'TotalTime'
-		document.getElementById(el)!.textContent = this.formatTime(this.video.duration)
-	}
 	pp() {
 		if(this.video.paused || this.video.ended){
 			this.video.play()
 		}else{
 			this.video.pause()
 		}
+	}
+	reloadResource() {
+		this.video.load()
+	}
+	seek(s:number) {
+		this.video.currentTime += s
+	}
+	setTotalTime() {
+		const el = 'TotalTime'
+		document.getElementById(el)!.textContent = this.formatTime(this.video.duration)
 	}
 	updateCurrentTime() {
 		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
@@ -63,7 +66,7 @@ class Terminal {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
 	}
 	putEnd() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoem ipsum ${Math.floor(Math.random()*100000)}\n\n`
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n`
 	}
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
@@ -106,6 +109,7 @@ class Application {
 		document.addEventListener('keydown', e=>this.keyEvents(e))
 		window.addEventListener('resize', _=>this.terminal.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
+		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
 	}
 	static isExistFile(file:string) {
 		try {
@@ -138,10 +142,12 @@ class Application {
 				break
 		}
 	}
-	private writeFile() {
+	private writeFile(flag=false) {
 		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
 		fs.writeFile(filePath, data, (err:any)=>{
 			if(err) throw err
+			if(flag) appRoute.reload()
+			// this.video.reloadResource()
 		})
 	}
 	viewOpenFile() {
