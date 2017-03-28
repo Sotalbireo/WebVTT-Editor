@@ -8,7 +8,7 @@ let appRoute :ApplicationRoute
 
 class VideoController {
 	private video :HTMLVideoElement
-	constructor(_arg:{path:string,targ:string}) {
+	constructor(_arg:{path:string,el:string}) {
 		this.video = document.getElementById('Video')! as HTMLVideoElement
 		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
 		this.video.addEventListener('loadedmetadata', _=>this.setTotalTime())
@@ -47,10 +47,10 @@ class VideoController {
 
 
 
-class Terminal {
+class Console {
 	private dom :HTMLTextAreaElement
 
-	constructor(_arg:{path:string,targ:string}) {
+	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
 		this.dom.value = fs.readFileSync(filePath,'utf8')
@@ -93,21 +93,21 @@ class Terminal {
 
 
 class Application {
-	private videoPath :string
-	private subtlPath :string
-	private videoTarg :string = 'Video'
-	private termTarg  :string = 'VttEditor'
+	private videoPath   :string
+	private subtlPath   :string
+	private videoElem   :string = 'Video'
+	private consoleElem :string = 'Textarea'
 	public video    :VideoController
-	public terminal :Terminal
+	public console :Console
 
 	constructor(_arg:any) {
-		this.video = new VideoController({path:this.videoPath, targ:this.videoTarg})
-		this.terminal = new Terminal({path:this.subtlPath, targ:this.termTarg})
-		// this.video = new VideoController({path:this.videoPath, targ:this.videoTarg})
-		// this.terminal = new Terminal({path:this.subtlPath, targ:this.termTarg})
-		this.terminal.resize()
+		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
+		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
+		// this.video = new VideoController({path:this.videoPath, targ:this.videoElem})
+		// this.console = new Console({path:this.subtlPath, targ:this.consoleElem})
+		this.console.resize()
 		document.addEventListener('keydown', e=>this.keyEvents(e))
-		window.addEventListener('resize', _=>this.terminal.resize())
+		window.addEventListener('resize', _=>this.console.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
 	}
@@ -135,10 +135,10 @@ class Application {
 				this.video.pp()
 				break
 			case 'i':
-				this.terminal.putBegin()
+				this.console.putBegin()
 				break
 			case 'o':
-				this.terminal.putEnd()
+				this.console.putEnd()
 				break
 		}
 	}
