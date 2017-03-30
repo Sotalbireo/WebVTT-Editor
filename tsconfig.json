@@ -31,7 +31,6 @@
     "include": [
         "app.ts",
         "**/page.ts"
-        // "**/pages.tsx"
     ],
     "exclude": [
         "node_modules"

@@ -6,26 +6,24 @@
 	<title>WebVTT Editor (beta)</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<style type="text/css">
+		.form-control[readonly] {background-color:inherit}
 		body{overflow:hidden}
 		.container{width:100%}
 		video{border:2px solid #ccc;padding:5px}
 		.console{vertical-align:top;padding:5px;padding-left:15px}
 		.pop{background-color:rgba(0,0,0,0.8);z-index:1040;width:100vw;height:100vh;position:absolute;top:0;left:0}
 		.pop .step{background-color:#fff;z-index:1050;width:80%;height:70%;position:absolute;top:0;left:10%;padding:10px 15px 15px;}
-		#Textarea{padding-bottom:0}
 		.lh-1{line-height:1!important}
+		.h-100{height:100%!important}
 
 	</style>
 	<script>require('./page.js')</script>
 </head>
 <body>
-	<header class="navbar navbar-light mb-3" style="background-color:#e3f2fd"><div class="container my-0">
-		<h1 class="navbar-bland mb-0 text-primary">WebVTT Editor</h1>
-	</div></header>
 
 
 
-	<div id="Body" class="container">
+	<div id="Body" class="container mt-2 mb-3">
 	<table class="w-100">
 		<col width="60%">
 	<tbody>
@@ -37,13 +35,21 @@
 				</video>
 			</td>
 			<td class="console">
-				<p style="font-size:2em;white-space:nowrap;text-align:justify;"><span id="CurrentTime">00:00:00</span> / <span id="TotalTime">00:00:00</span></p>
+				<p style="font-size:2em;white-space:nowrap;text-align:justify;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
 				<div class="mb-3" style="position:relative">
 					<button id="Prev10" class="btn btn-outline-info py-1 lh-1" style="width:29%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg> 10s</button>
 					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1" style="width:38%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
 					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1" style="width:29%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg> 10s</button>
 				</div>
-				<div class="mb-2" style="position:relative">
+				<div id="CheckNow" class="mb-2" style="position:relative">
+					<div class="input-group">
+						<input type="text" class="form-control" readonly>
+						<span class="input-group-btn">
+							<button class="btn btn-info py-1 lh-1"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#FFF" cx="32" cy="32" r="30"/><path fill="#5bc0de" d="M30 6h4v32h-4z"/><path fill="#5bc0de" d="M26.001 30h24v4h-24z"/><circle fill="#5bc0de" cx="32" cy="32" r="4"/><circle fill="#5bc0de" cx="32" cy="32" r="3"/></svg></button>
+						</span>
+					</div>
+				</div>
+				<div class="btn-group mb-2" style="position:relative">
 					<button id="PutBegin" class="btn btn-primary" style="width:49%">開始位置</button>
 					<button id="PutEnd" class="btn btn-primary" style="width:49%">終了位置</button>
 				</div>
@@ -52,7 +58,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan=2 id="TextareaFrame"><textarea id="Textarea" class="form-control" style="height:100%"></textarea></td>
+			<td colspan=2 id="TextareaFrame"><textarea id="Textarea" class="form-control h-100 pb-0"></textarea></td>
 		</tr>
 	</tbody>
 	</table>

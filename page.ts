@@ -11,7 +11,7 @@ class VideoController {
 	constructor(_arg:{path:string,el:string}) {
 		this.video = document.getElementById('Video')! as HTMLVideoElement
 		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
-		this.video.addEventListener('loadedmetadata', _=>this.setTotalTime())
+		this.video.addEventListener('loadedmetadata', _=>this.initTimeCounter())
 	}
 	formatTime(t:number, f=false) {
 		let h   = ('0'  + Math.floor(t/3600)%60).slice(-2)
@@ -36,9 +36,11 @@ class VideoController {
 	seek(s:number) {
 		this.video.currentTime += s
 	}
-	setTotalTime() {
-		const el = 'TotalTime'
-		document.getElementById(el)!.textContent = this.formatTime(this.video.duration)
+	initTimeCounter() {
+		const el1 = 'CurrentTime'
+		const el2 = 'TotalTime'
+		document.getElementById(el1)!.textContent = this.formatTime(0)
+		document.getElementById(el2)!.textContent = this.formatTime(this.video.duration)
 	}
 	updateCurrentTime() {
 		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
@@ -53,8 +55,15 @@ class Console {
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-		this.dom.value = fs.readFileSync(filePath,'utf8')
+		fs.readFile(filePath,'utf8',(e,data)=>{
+			if(e) {
+				throw e
+			}else{
+				this.dom.value = data
+			}
+		})
 
+		document.querySelector('#CheckNow button')!.addEventListener('click',_=>this.wtiin())
 		document.getElementById('Prev10')!.addEventListener('click',_=>app.video.seek(-10))
 		document.getElementById('PlayPause')!.addEventListener('click',_=>app.video.pp())
 		document.getElementById('Fwd10')!.addEventListener('click',_=>app.video.seek(10))
@@ -71,7 +80,13 @@ class Console {
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
 		let r = d.getBoundingClientRect()
-		d.setAttribute('height', (window.innerHeight - 30 - r.top) + 'px')
+		d.setAttribute('height', (window.innerHeight - 16 - r.top) + 'px')
+	}
+	/**
+	 * What time is it now?
+	 */
+	wtiin() {
+		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = app.video.formatTime(app.video.getCurrentTime(), true)
 	}
 }
 
@@ -123,13 +138,19 @@ class Application {
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
 		switch (e.key.toLowerCase()) {
-			case 'q':
+			case 'z':
 			case 'arrowleft':
 				this.video.seek(-10)
 				break
-			case 'e':
+			case 'x':
 			case 'arrowright':
 				this.video.seek(10)
+				break
+			case 'a':
+				this.video.seek(-60)
+				break
+			case 's':
+				this.video.seek(60)
 				break
 			case ' ':
 				this.video.pp()
@@ -139,6 +160,9 @@ class Application {
 				break
 			case 'o':
 				this.console.putEnd()
+				break
+			case 'c':
+				this.console.wtiin()
 				break
 		}
 	}
