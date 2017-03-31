@@ -6,6 +6,7 @@ let app      :Application
 let appRoute :ApplicationRoute
 
 
+
 class VideoController {
 	private video :HTMLVideoElement
 	constructor(_arg:{path:string,el:string}) {
@@ -92,18 +93,18 @@ class Console {
 
 
 
-// class OpenFile {
-// 	private video :string
-// 	private subtitle :string
-// 	constructor(args:{vid:string,sub:string}) {
-// 		this.video = args.vid
-// 		this.subtitle = args.sub
-// 		console.dir(this.showPath)
-// 	}
-// 	get showPath() {
-// 		return [this.video, this.subtitle]
-// 	}
-// }
+class FileController {
+	private video :string
+	private subtitle :string
+	constructor(args:{vid:string,sub:string}) {
+		this.video = args.vid
+		this.subtitle = args.sub
+		console.dir(this.showPath)
+	}
+	get showPath() {
+		return [this.video, this.subtitle]
+	}
+}
 
 
 
@@ -125,15 +126,6 @@ class Application {
 		window.addEventListener('resize', _=>this.console.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
-	}
-	static isExistFile(file:string) {
-		try {
-			fs.statSync(file)
-			return true
-		} catch(err) {
-			if(err.code !== 'ENOENT') console.error(err)
-			return false
-		}
 	}
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
@@ -179,13 +171,19 @@ class Application {
 	}
 }
 
+
+
 class ApplicationRoute {
-	private _pageId:string
+	private pageId:string
+	private events :any
 	constructor(preset?:string){
 		this.pageId = preset || window.location.hash || ''
-	}
-	set pageId(str:string){
-		this._pageId = str
+		this.events = {
+			"" : "",
+			"open" : "openFile",
+			"edit" : "edit",
+			"lint" : "lint"
+		}
 	}
 	flow() {
 
