@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<style type="text/css">
 		.form-control[readonly] {background-color:inherit}
+		.text-justify {text-justify:auto;}
 		body{overflow:hidden}
 		.container{width:100%}
 		video{border:2px solid #ccc;padding:5px}
@@ -23,9 +24,9 @@
 
 
 
-	<div id="Body" class="container mt-2 mb-3">
+	<div id="Body" class="container mt-2">
 	<table class="w-100">
-		<col width="60%">
+		<col width="50%">
 	<tbody>
 		<tr>
 			<td id="VideoPreviewer">
@@ -35,26 +36,31 @@
 				</video>
 			</td>
 			<td class="console">
-				<p style="font-size:2em;white-space:nowrap;text-align:justify;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
-				<div class="mb-3" style="position:relative">
-					<button id="Prev10" class="btn btn-outline-info py-1 lh-1" style="width:29%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg> 10s</button>
-					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1" style="width:38%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
-					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1" style="width:29%"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg> 10s</button>
+				<p class="text-center text-nowrap mb-0" style="font-size:2em;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
+				<div class="progress mb-4">
+					<div id="ProgressBar" class="progress-bar" role="progressbar" aria-volumenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;height:3px"></div>
+				</div>
+				<div class="btn-group mb-3 w-100">
+					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg> 10s</button>
+					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
+					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg> 10s</button>
 				</div>
 				<div id="CheckNow" class="mb-2" style="position:relative">
 					<div class="input-group">
-						<input type="text" class="form-control" readonly>
+						<input type="text" class="form-control" onclick="this.select()" readonly>
 						<span class="input-group-btn">
 							<button class="btn btn-info py-1 lh-1"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#FFF" cx="32" cy="32" r="30"/><path fill="#5bc0de" d="M30 6h4v32h-4z"/><path fill="#5bc0de" d="M26.001 30h24v4h-24z"/><circle fill="#5bc0de" cx="32" cy="32" r="4"/><circle fill="#5bc0de" cx="32" cy="32" r="3"/></svg></button>
 						</span>
 					</div>
 				</div>
-				<div class="btn-group mb-2" style="position:relative">
-					<button id="PutBegin" class="btn btn-primary" style="width:49%">開始位置</button>
-					<button id="PutEnd" class="btn btn-primary" style="width:49%">終了位置</button>
+				<div class="btn-group mb-2 w-100">
+					<button id="PutBegin" class="btn btn-primary w-50">開始位置</button>
+					<button id="PutEnd" class="btn btn-primary w-50">終了位置</button>
 				</div>
-				<button id="Write" class="btn btn-outline-danger btn-block">ファイル更新</button>
-				<button id="WriteReload" class="btn btn-outline-danger btn-block">ファイル更新・再読込</button>
+				<div class="btn-group w-100">
+					<button id="Write" class="btn btn-sm btn-outline-danger w-75">ファイル更新</button>
+					<button id="WriteReload" class="btn btn-sm btn-outline-danger w-25">＋再読込</button>
+				</div>
 			</td>
 		</tr>
 		<tr>

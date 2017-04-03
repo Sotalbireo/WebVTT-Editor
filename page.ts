@@ -2,17 +2,18 @@ import * as fs from 'fs'
 import * as path from 'path'
 const filePath = path.join(__dirname, 'subtitle.ja.vtt')
 
-let app      :Application
-let appRoute :ApplicationRoute
+let app :Application
 
 
 
 class VideoController {
 	private video :HTMLVideoElement
+	// private duration :number
 	constructor(_arg:{path:string,el:string}) {
 		this.video = document.getElementById('Video')! as HTMLVideoElement
 		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
-		this.video.addEventListener('loadedmetadata', _=>this.initTimeCounter())
+		this.video.addEventListener('timeupdate', _=>this.updateProgressbar())
+		this.video.addEventListener('loadedmetadata', _=>this.init())
 	}
 	formatTime(t:number, f=false) {
 		let h   = ('0'  + Math.floor(t/3600)%60).slice(-2)
@@ -37,14 +38,20 @@ class VideoController {
 	seek(s:number) {
 		this.video.currentTime += s
 	}
-	initTimeCounter() {
+	init() {
 		const el1 = 'CurrentTime'
 		const el2 = 'TotalTime'
-		document.getElementById(el1)!.textContent = this.formatTime(0)
+		document.getElementById(el1)!.textContent = this.formatTime(this.video.currentTime)
 		document.getElementById(el2)!.textContent = this.formatTime(this.video.duration)
 	}
 	updateCurrentTime() {
 		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
+	}
+	updateProgressbar() {
+		// WIP: でもこれいる？
+		// let el = document.getElementById('ProgressBar')!
+		// let pos = this.getCurrentTime() / this.duration
+		// console.log(pos)
 	}
 }
 
@@ -72,7 +79,7 @@ class Console {
 		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
 
 	}
-	putBegin(indent=-0.05) {
+	putBegin(indent = -0.05) {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
 	}
 	putEnd() {
@@ -81,7 +88,7 @@ class Console {
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
 		let r = d.getBoundingClientRect()
-		d.setAttribute('height', (window.innerHeight - 16 - r.top) + 'px')
+		d.setAttribute('height', (window.innerHeight - 12 - r.top) + 'px')
 	}
 	/**
 	 * What time is it now?
@@ -93,18 +100,24 @@ class Console {
 
 
 
-class FileController {
-	private video :string
-	private subtitle :string
-	constructor(args:{vid:string,sub:string}) {
-		this.video = args.vid
-		this.subtitle = args.sub
-		console.dir(this.showPath)
-	}
-	get showPath() {
-		return [this.video, this.subtitle]
-	}
-}
+// class FileLoader {
+// 	private filePath :string
+// 	constructor(props :string) {
+// 		this.filePath = path.normalize(props)
+// 		console.dir(this.showPath)
+// 	}
+// 	get showPath() {
+// 		return this.filePath
+// 	}
+// 	getFileData() {
+// 		fs.readFile(this.filePath,'utf8',(e,data)=>{
+// 			if(e) {
+// 				throw e
+// 			}
+// 			return data
+// 		})
+// 	}
+// }
 
 
 
@@ -119,8 +132,6 @@ class Application {
 	constructor(_arg:any) {
 		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
 		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
-		// this.video = new VideoController({path:this.videoPath, targ:this.videoElem})
-		// this.console = new Console({path:this.subtlPath, targ:this.consoleElem})
 		this.console.resize()
 		document.addEventListener('keydown', e=>this.keyEvents(e))
 		window.addEventListener('resize', _=>this.console.resize())
@@ -162,58 +173,18 @@ class Application {
 		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
 		fs.writeFile(filePath, data, (err:any)=>{
 			if(err) throw err
-			if(flag) appRoute.reload()
-			// this.video.reloadResource()
+			if(flag) window.location.reload()
 		})
 	}
-	viewOpenFile() {
-
-	}
 }
 
 
-
-class ApplicationRoute {
-	private pageId:string
-	private events :any
-	constructor(preset?:string){
-		this.pageId = preset || window.location.hash || ''
-		this.events = {
-			"" : "",
-			"open" : "openFile",
-			"edit" : "edit",
-			"lint" : "lint"
-		}
-	}
-	flow() {
-
-	}
-	changeHash(hash:string) {
-		event!.preventDefault()
-		window.location.assign('#'+hash)
-	}
-	isDisp(el:string, isDisp:boolean) {
-		document.getElementById(el)!.style.display = (isDisp)? 'block': 'none'
-	}
-	linkDummy() {
-		event!.preventDefault()
-		this.isDisp('dummylink', true)
-	}
-	reload() {
-		window.location.reload()
-	}
-	start() {
-		window.addEventListener('hashchange', this.flow)
-	}
-}
 
 /**
  * Run
  */
 let Init = ()=>{
-	appRoute = new ApplicationRoute()
-	app      = new Application({})
-	appRoute.start()
+	app = new Application({})
 }
 if(document.readyState!=='loading'){
 	Init()
