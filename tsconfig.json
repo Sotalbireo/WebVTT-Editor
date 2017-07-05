@@ -4,7 +4,7 @@
         "alwaysStrict": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "jsx": "preserve",
+        "jsx": "react",
         "lib": [
             "dom",
             "es2017",

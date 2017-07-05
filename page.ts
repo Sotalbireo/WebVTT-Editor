@@ -1,157 +1,193 @@
 import * as fs from 'fs'
 import * as path from 'path'
 const filePath = path.join(__dirname, 'subtitle.ja.vtt')
-let video :HTMLVideoElement
+
+let app :Application
 
 
 
-const formatTime = (t:number, f=false)=>{
-	let h  = ('0' + Math.floor(t/3600)%60).slice(-2)
-	let m  = ('0' + Math.floor(t/60)%60).slice(-2)
-	let s  = ('0' + Math.floor(t)%60).slice(-2)
-	return (f)? `${h}:${m}:${s}.${Math.floor(t*1000%60000).toString().slice(-3)}`: `${h}:${m}:${s}`
-}
-let getCurrentTime = (indent=0)=>{
-	return video.currentTime + indent
-}
-let setCurrentTime = ()=>{
-	document.getElementById('CurrentTime')!.textContent = formatTime(getCurrentTime())
-}
-let setTotalTime = ()=>{
-	video.addEventListener("loadedmetadata", function() {
-		document.getElementById('TotalTime')!.textContent = formatTime(video.duration)
-	}, false)
-}
-
-let startPause = ()=>{
-	if(video.paused || video.ended){
-		video.play()
-	}else{
-		video.pause()
+class VideoController {
+	private video :HTMLVideoElement
+	// private duration :number
+	constructor(_arg:{path:string,el:string}) {
+		this.video = document.getElementById('Video')! as HTMLVideoElement
+		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
+		this.video.addEventListener('timeupdate', _=>this.updateProgressbar())
+		this.video.addEventListener('loadedmetadata', _=>this.init())
 	}
-}
-
-let videoSeek = (s:number)=>{
-	video.currentTime += s
-}
-
-let appendBegin = ()=>{
-	let dom = document.getElementsByTagName('textarea')[0]
-	dom.value += `${formatTime(getCurrentTime(-0.01), true)} --> `
-}
-let appendEnd = ()=>{
-	let dom = document.getElementsByTagName('textarea')[0]
-	dom.value += `${formatTime(getCurrentTime(), true)}
-Loem ipsum ${Math.floor(Math.random()*100000)}\n\n`
-}
-
-let keyboardEvents = (e:KeyboardEvent)=>{
-	if(/textarea/i.test(e.srcElement!.tagName)) return
-
-	switch (e.key.toLowerCase()) {
-		case 'q':
-			videoSeek(-10)
-			break
-		case 'e':
-			videoSeek(10)
-			break
-		case ' ':
-			startPause()
-			break
-		case 'i':
-			appendBegin()
-			break
-		case 'o':
-			appendEnd()
-			break
+	formatTime(t:number, f=false) {
+		let h   = ('0'  + Math.floor(t/3600)%60).slice(-2)
+		let m   = ('0'  + Math.floor(t/60  )%60).slice(-2)
+		let s   = ('0'  + Math.floor(t     )%60).slice(-2)
+		let sss = ('00' + Math.floor(t%10*1000)).slice(-3)
+		return (f)? `${h}:${m}:${s}.${sss}`: `${h}:${m}:${s}`
+	}
+	getCurrentTime(indent=0) {
+		return this.video.currentTime + indent
+	}
+	pp() {
+		if(this.video.paused || this.video.ended){
+			this.video.play()
+		}else{
+			this.video.pause()
+		}
+	}
+	reloadResource() {
+		this.video.load()
+	}
+	seek(s:number) {
+		this.video.currentTime += s
+	}
+	init() {
+		const el1 = 'CurrentTime'
+		const el2 = 'TotalTime'
+		document.getElementById(el1)!.textContent = this.formatTime(this.video.currentTime)
+		document.getElementById(el2)!.textContent = this.formatTime(this.video.duration)
+	}
+	updateCurrentTime() {
+		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
+	}
+	updateProgressbar() {
+		// WIP: でもこれいる？
+		// let el = document.getElementById('ProgressBar')!
+		// let pos = this.getCurrentTime() / this.duration
+		// console.log(pos)
 	}
 }
 
 
 
-let overwriteFile = ()=>{
-	if(confirm('Overwrite, right?\nIf Ok then this Page will Reload.')){
-		let data = document.getElementsByTagName('textarea')[0].value
-		fs.writeFile(filePath, data, (err:any)=>{
-			if(err){ throw err
-			}else{ location.reload(true)
-			}
-		})
-	}
-}
+class Console {
+	private dom :HTMLTextAreaElement
 
-const textareaResize = ()=>{
-	let d = document.getElementById('Textarea')!
-	let r = d.getBoundingClientRect()
-	const h = window.innerHeight
-	d.setAttribute('height', (h - 30 - r.top) + 'px')
-}
+	constructor(_arg:{path:string,el:string}) {
+		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-
-
-/**
- * Inits
- */
-let preInit = ()=>{
-	if(!isExistFile(filePath)){
-		const data = fs.readFileSync(path.join(__dirname, 'assets', 'sample.vtt.txt'), 'utf8')
-		fs.writeFile(filePath, data, (err:any)=>{
-			if(err){ throw err
+		fs.readFile(filePath,'utf8',(e,data)=>{
+			if(e) {
+				throw e
 			}else{
-				location.reload(true)
+				this.dom.value = data
 			}
-
 		})
+
+		document.querySelector('#CheckNow button')!.addEventListener('click',_=>this.wtiin())
+		document.getElementById('Prev10')!.addEventListener('click',_=>app.video.seek(-10))
+		document.getElementById('PlayPause')!.addEventListener('click',_=>app.video.pp())
+		document.getElementById('Fwd10')!.addEventListener('click',_=>app.video.seek(10))
+		document.getElementById('PutBegin')!.addEventListener('click',_=>this.putBegin())
+		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
+
+	}
+	putBegin(indent = -0.05) {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
+	}
+	putEnd() {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n`
+	}
+	resize() {
+		let d = document.getElementById('TextareaFrame')!
+		let r = d.getBoundingClientRect()
+		d.setAttribute('height', (window.innerHeight - 12 - r.top) + 'px')
+	}
+	/**
+	 * What time is it now?
+	 */
+	wtiin() {
+		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = app.video.formatTime(app.video.getCurrentTime(), true)
 	}
 }
 
-let Init = ()=>{
-	video = document.getElementsByTagName('video')[0]
-	textareaResize()
-	setTotalTime()
 
-	document.getElementById('StartPause')!.addEventListener('click',startPause,false)
-	document.getElementById('Prev10')!.addEventListener('click',_$=>videoSeek(-10),false)
-	document.getElementById('Fwd10')!.addEventListener('click',_$=>videoSeek(10),false)
-	document.getElementById('Overwrite')!.addEventListener('click',overwriteFile,false)
-	document.getElementById('AppendBegin')!.addEventListener('click',appendBegin,false)
-	document.getElementById('AppendEnd')!.addEventListener('click',appendEnd,false)
-	document.addEventListener('keydown', keyboardEvents, false)
 
-	document.getElementsByTagName('textarea')[0].value = fs.readFileSync(filePath,'utf8')
+// class FileLoader {
+// 	private filePath :string
+// 	constructor(props :string) {
+// 		this.filePath = path.normalize(props)
+// 		console.dir(this.showPath)
+// 	}
+// 	get showPath() {
+// 		return this.filePath
+// 	}
+// 	getFileData() {
+// 		fs.readFile(this.filePath,'utf8',(e,data)=>{
+// 			if(e) {
+// 				throw e
+// 			}
+// 			return data
+// 		})
+// 	}
+// }
 
-	video.addEventListener('timeupdate', setCurrentTime, false)
-	window.addEventListener('resize', textareaResize, false)
+
+
+class Application {
+	private videoPath   :string
+	private subtlPath   :string
+	private videoElem   :string = 'Video'
+	private consoleElem :string = 'Textarea'
+	public video    :VideoController
+	public console :Console
+
+	constructor(_arg:any) {
+		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
+		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
+		this.console.resize()
+		document.addEventListener('keydown', e=>this.keyEvents(e))
+		window.addEventListener('resize', _=>this.console.resize())
+		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
+		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
+	}
+	private keyEvents(e:KeyboardEvent) {
+		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
+		switch (e.key.toLowerCase()) {
+			case 'z':
+			case 'arrowleft':
+				this.video.seek(-10)
+				break
+			case 'x':
+			case 'arrowright':
+				this.video.seek(10)
+				break
+			case 'a':
+				this.video.seek(-60)
+				break
+			case 's':
+				this.video.seek(60)
+				break
+			case ' ':
+				this.video.pp()
+				break
+			case 'i':
+				this.console.putBegin()
+				break
+			case 'o':
+				this.console.putEnd()
+				break
+			case 'c':
+				this.console.wtiin()
+				break
+		}
+	}
+	private writeFile(flag=false) {
+		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
+		fs.writeFile(filePath, data, (err:any)=>{
+			if(err) throw err
+			if(flag) window.location.reload()
+		})
+	}
 }
-
-
 
 
 
 /**
  * Run
  */
-preInit()
+let Init = ()=>{
+	app = new Application({})
+}
 if(document.readyState!=='loading'){
 	Init()
 }else{
 	document.addEventListener('DOMContentLoaded',Init)
-}
-
-
-
-
-
-/**
- * Utilities
- */
-function isExistFile(file:string){
-	try {
-		fs.statSync(file)
-		return true
-	} catch(err) {
-		if(err.code !== 'ENOENT') console.error(err)
-		return false
-	}
-
 }

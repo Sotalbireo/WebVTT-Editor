@@ -14,6 +14,22 @@ const url = require('url')
 // 	"vtt": "text/vtt",
 // 	"mp4": "video/mp4"
 // }
+const menu = electron.Menu.buildFromTemplate([
+	{
+		label: 'Edit/View',
+		submenu: [
+			{
+				label: 'Open Files',
+				click() { console.log('test')}
+			},
+			{ role: 'reload'},
+			{ type: 'separator'},
+			{ role: 'toggledevtools'},
+			{ type: 'separator'},
+			{ role: 'close'}
+		]
+	}
+])
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -36,6 +52,7 @@ function createWindow () {
 		resizable: true
 	})
 	// mainWindow.setMenu(null)
+	mainWindow.setMenu(menu)
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),
 		protocol: 'file:',
