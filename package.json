@@ -17,8 +17,10 @@
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
   "main": "app.js",
   "scripts": {
-    "start": "electron .",
-    "compile": "tsc -p .",
+    "start": "webpack --config webpack.config.js --colors && electron .",
+    "elec": "electron .",
+    "build": "webpack --config webpack.config.js --colors --progress",
+    "watch": "webpack --config webpack.config.js --colors --watch",
     "test": "tsc -p . --noEmit"
   },
   "devDependencies": {
@@ -26,10 +28,19 @@
     "@types/node": "^7.0.4",
     "@types/react": "^15.0.14",
     "@types/react-dom": "^0.14.23",
+    "css-loader": "^0.28.4",
     "electron": "^1.4.14",
     "electron-packager": "^8.5.1",
+    "file-loader": "^0.11.2",
     "npm-tasks": "^1.4.4",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^2.2.2",
+    "webpack": "^3.0.0"
+  },
+  "dependencies": {
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "semantic-ui-css": "^2.2.10",
+    "semantic-ui-react": "^0.70.0"
   }
 }
