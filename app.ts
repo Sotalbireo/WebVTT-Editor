@@ -5,22 +5,13 @@ const BrowserWindow = electron.BrowserWindow
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
-// const mimeTypes = {
-// 	"html": "text/html",
-// 	"png": "image/png",
-// 	"js": "text/javascript",
-// 	"css": "text/css",
-// 	"txt": "text/plain",
-// 	"vtt": "text/vtt",
-// 	"mp4": "video/mp4"
-// }
 const menu = electron.Menu.buildFromTemplate([
 	{
 		label: 'Edit/View',
 		submenu: [
 			{
 				label: 'Open Files',
-				click() { console.log('test')}
+				click() { alert('test')}
 			},
 			{ role: 'reload'},
 			{ type: 'separator'},
@@ -47,8 +38,8 @@ app.on('activate', ()=>{
 
 function createWindow () {
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1024,
+		height: 768,
 		resizable: true
 	})
 	// mainWindow.setMenu(null)

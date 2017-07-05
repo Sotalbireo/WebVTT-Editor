@@ -1,6 +1,7 @@
 node_modules/
 npm-debug*
 WebVTT-Editor*/
+assets/
 *.js
 *.map
 
