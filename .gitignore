@@ -2,8 +2,7 @@ node_modules/
 npm-debug*
 WebVTT-Editor*/
 assets/
-*.js
+data/
 *.map
 
 *.vtt
-*.mp4
