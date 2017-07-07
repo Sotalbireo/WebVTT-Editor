@@ -3,6 +3,9 @@ npm-debug*
 WebVTT-Editor*/
 assets/
 data/
+*.js
 *.map
 
 *.vtt
+
+!/webpack.config.js
