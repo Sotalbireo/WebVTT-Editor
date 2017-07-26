@@ -1,7 +1,7 @@
 const path = require('path')
 
 const webpackConfig = {
-    target: 'web',
+    target: 'electron',
 
     entry: './src/index.tsx',
 
@@ -20,7 +20,7 @@ const webpackConfig = {
         },
         {
             test: /\.(png|svg|jpg|gif)$/,
-            use: 'file-loader?name=[name].[ext]'
+            use: 'file-loader'
         },
         {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -40,6 +40,10 @@ const webpackConfig = {
         ],
         extensions: [".tsx", ".ts", ".js"]
     },
+
+    devServer: {
+        port: 8080
+    }
 }
 
 module.exports = webpackConfig

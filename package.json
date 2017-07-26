@@ -18,16 +18,16 @@
   "main": "app.js",
   "scripts": {
     "start": "webpack --config webpack.config.js --colors && electron .",
-    "elec": "electron .",
-    "build": "webpack --config webpack.config.js --colors --progress",
-    "watch": "webpack --config webpack.config.js --colors --watch",
+    "electron": "electron .",
+    "webpack": "webpack --config webpack.config.js --colors --progress",
+    "webpack:dev": "webpack-dev-server --hot --inline",
     "test": "tsc -p . --noEmit"
   },
   "devDependencies": {
     "@types/electron": "^1.4.31",
     "@types/node": "^7.0.4",
     "@types/react": "^15.0.14",
-    "@types/react-dom": "^0.14.23",
+    "@types/react-dom": "^15.0.0",
     "css-loader": "^0.28.4",
     "electron": "^1.4.14",
     "electron-packager": "^8.5.1",
@@ -35,7 +35,9 @@
     "npm-tasks": "^1.4.4",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.2",
-    "webpack": "^3.0.0"
+    "typescript": "^2.4.2",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
     "react": "^15.4.2",

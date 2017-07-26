@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-const filePath = path.join(__dirname, 'subtitle.ja.vtt')
+const filePath = path.join(__dirname, 'subtitle.vtt')
 
 let app :Application
 
@@ -82,6 +82,9 @@ class Console {
 	putBegin(indent = -0.05) {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
 	}
+	putDiv() {
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
+	}
 	putEnd() {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n`
 	}
@@ -162,6 +165,9 @@ class Application {
 				this.console.putBegin()
 				break
 			case 'o':
+				this.console.putDiv()
+				break
+			case 'p':
 				this.console.putEnd()
 				break
 			case 'c':

@@ -8,13 +8,12 @@ class Video extends React.Component<any, any> {
 		return (
 			<video
 				controls
-				poster={require('file-loader?name=[name].[ext]!placehold.png')}
 				preload="auto"
 				width="100%"
 				height="auto"
 			>
 				<source src={this.props.url} type="video/mp4" />
-				<track label="Japanese" kind="subtitles" src="./subtitle.ja.vtt" default></track>
+				<track label="Japanese" kind="subtitles" src="./subtitle.vtt" default></track>
 			</video>
 		)
 	}
