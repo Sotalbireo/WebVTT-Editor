@@ -1,4 +1,5 @@
 const path = require('path')
+const { CheckerPlugin } = require('asesome-typescript-loader')
 
 const webpackConfig = {
     target: 'electron',
@@ -8,7 +9,7 @@ const webpackConfig = {
     module: {
         rules: [{
             test: /\.tsx?$/,
-            use: 'ts-loader',
+            use: 'awesome-typescript-loader',
             exclude: /node_modules/
         },
         {
@@ -33,12 +34,15 @@ const webpackConfig = {
         path: path.resolve(__dirname, 'assets'),
         publicPath: './assets/'
     },
+    plugins [
+        new CheckerPlugin()
+    ],
     resolve: {
         modules: [
             path.resolve('src'),
             'node_modules'
         ],
-        extensions: [".tsx", ".ts", ".js"]
+        extensions: [".tsx", ".ts", ".js", ".jsx"]
     },
 
     devServer: {
