@@ -13,7 +13,7 @@ class Video extends React.Component<any, any> {
 				height="auto"
 			>
 				<source src={this.props.url} type="video/mp4" />
-				<track label="Japanese" kind="subtitles" src="./subtitle.vtt" default></track>
+				<track label="Japanese" kind="subtitles" src={this.props.src} default></track>
 			</video>
 		)
 	}

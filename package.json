@@ -19,9 +19,9 @@
   "scripts": {
     "start": "webpack --config webpack.config.js --colors && electron .",
     "electron": "electron .",
-    "webpack": "webpack --config webpack.config.js --colors --progress",
-    "webpack:dev": "webpack-dev-server --hot --inline",
-    "test": "tsc -p . --noEmit"
+    "build": "webpack --config webpack.config.js --colors --progress",
+    "dev": "webpack-dev-server --config webpack.config.js --hot --inline",
+    "test": "tsc -p . --noEmit --listFiles"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
@@ -34,6 +34,7 @@
     "electron-packager": "^9.1.0",
     "file-loader": "^1.1.5",
     "npm-tasks": "^1.4.4",
+    "semantic-ui-react": "^0.76.0",
     "style-loader": "^0.19.0",
     "ts-loader": "^3.1.1",
     "typescript": "^2.6.1",

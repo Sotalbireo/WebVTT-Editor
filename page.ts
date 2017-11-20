@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
-const filePath = path.join(__dirname, 'subtitle.vtt')
+const subtitlePath = path.resolve(path.join(__dirname, './data/subtitle.vtt'))
+// const notePath = path.join(__dirname, 'note.txt')
 
 let app :Application
 
@@ -12,7 +13,6 @@ class VideoController {
 	constructor(_arg:{path:string,el:string}) {
 		this.video = document.getElementById('Video')! as HTMLVideoElement
 		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
-		this.video.addEventListener('timeupdate', _=>this.updateProgressbar())
 		this.video.addEventListener('loadedmetadata', _=>this.init())
 	}
 	formatTime(t:number, f=false) {
@@ -47,12 +47,6 @@ class VideoController {
 	updateCurrentTime() {
 		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
 	}
-	updateProgressbar() {
-		// WIP: でもこれいる？
-		// let el = document.getElementById('ProgressBar')!
-		// let pos = this.getCurrentTime() / this.duration
-		// console.log(pos)
-	}
 }
 
 
@@ -63,7 +57,7 @@ class Console {
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-		fs.readFile(filePath,'utf8',(e,data)=>{
+		fs.readFile(subtitlePath,'utf8',(e,data)=>{
 			if(e) {
 				throw e
 			}else{
@@ -104,22 +98,14 @@ class Console {
 
 
 // class FileLoader {
-// 	private filePath :string
-// 	constructor(props :string) {
-// 		this.filePath = path.normalize(props)
-// 		console.dir(this.showPath)
-// 	}
-// 	get showPath() {
-// 		return this.filePath
-// 	}
-// 	getFileData() {
-// 		fs.readFile(this.filePath,'utf8',(e,data)=>{
+// 	static getFileData(path:string) {
+// 		return (fs.readFile(path,'utf8',(e,data)=>{
 // 			if(e) {
 // 				throw e
 // 			}
 // 			return data
 // 		})
-// 	}
+// 	)}
 // }
 
 
@@ -177,7 +163,7 @@ class Application {
 	}
 	private writeFile(flag=false) {
 		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
-		fs.writeFile(filePath, data, (err:any)=>{
+		fs.writeFile(subtitlePath, data, (err:any)=>{
 			if(err) throw err
 			if(flag) window.location.reload()
 		})
@@ -189,7 +175,7 @@ class Application {
 /**
  * Run
  */
-let Init = ()=>{
+const Init = ()=>{
 	app = new Application({})
 }
 if(document.readyState!=='loading'){

@@ -1,10 +1,14 @@
 const path = require('path')
-const { CheckerPlugin } = require('asesome-typescript-loader')
+const { CheckerPlugin } = require('awesome-typescript-loader')
 
 const webpackConfig = {
     target: 'electron',
+    node: {
+        __dirname: true
+    },
 
-    entry: './src/index.tsx',
+    // entry: './src/index.tsx',
+    entry: './page.ts',
 
     module: {
         rules: [{
@@ -34,7 +38,7 @@ const webpackConfig = {
         path: path.resolve(__dirname, 'assets'),
         publicPath: './assets/'
     },
-    plugins [
+    plugins: [
         new CheckerPlugin()
     ],
     resolve: {
@@ -46,7 +50,7 @@ const webpackConfig = {
     },
 
     devServer: {
-        port: 8080
+        port: 8000
     }
 }
 
