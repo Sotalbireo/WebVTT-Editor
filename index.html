@@ -9,12 +9,13 @@
 		.form-control[readonly] {background-color:inherit}
 		.text-justify {text-justify:auto;}
 		body{overflow:hidden}
-		.container{width:100%;max-width:100%;}
+		.container{width:100%;max-width:100%}
 		video{border:2px solid #ccc;padding:5px}
 		.console{vertical-align:top;padding:5px;padding-left:15px}
 		.lh-1{line-height:1!important}
 		.h-100{height:100%!important}
 		.fullWH{height:100vh;width:100vw;margin:0!important;}
+		video.vimeo::cue{font-weight:bold}
 	</style>
 	<script src="assets/bundle.js" defer></script>
 </head>
@@ -28,7 +29,7 @@
 	<tbody>
 		<tr>
 			<td id="VideoPreviewer">
-				<video id="Video" controls preload="auto" width="100%" height="auto" crossorigin="anonymous">
+				<video id="Video" controls preload="auto" width="100%" height="auto" crossorigin="anonymous" class="vimeo">
 				<source src="data/video.mp4" type="video/mp4">
 				<track label="Japanese" kind="subtitles" src="data/subtitle.vtt" srclang="ja" default></track>
 				</video>
@@ -36,9 +37,9 @@
 			<td class="console">
 				<p class="text-center text-nowrap mb-0" style="font-size:2em;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
 				<div class="btn-group mb-3 w-100">
-					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg> 10s</button>
+					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg></button>
 					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
-					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg> 10s</button>
+					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg></button>
 				</div>
 				<div id="CheckNow" class="mb-2" style="position:relative">
 					<div class="input-group">
@@ -59,7 +60,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan=2 id="TextareaFrame"><textarea id="Textarea" class="form-control h-100 pb-0"></textarea></td>
+			<td colspan=2 id="TextareaFrame"><textarea id="Textarea" class="form-control h-100 pb-0" style="resize:none"></textarea></td>
 		</tr>
 	</tbody>
 	</table>

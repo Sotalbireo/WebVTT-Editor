@@ -38,6 +38,10 @@ class VideoController {
 	seek(s:number) {
 		this.video.currentTime += s
 	}
+	seek_f(f:number) {
+		this.video.pause()
+		this.video.currentTime += f*0.166 // ~1/60
+	}
 	init() {
 		const el1 = 'CurrentTime'
 		const el2 = 'TotalTime'
@@ -77,10 +81,10 @@ class Console {
 		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
 	}
 	putDiv() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
 	}
 	putEnd() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n`
+		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
 	}
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
@@ -130,22 +134,37 @@ class Application {
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
 		switch (e.key.toLowerCase()) {
-			case 'z':
+			case 'v':
 			case 'arrowleft':
 				this.video.seek(-10)
 				break
-			case 'x':
+			case 'n':
 			case 'arrowright':
 				this.video.seek(10)
 				break
-			case 'a':
-				this.video.seek(-60)
+			case 'c':
+				if(e.shiftKey) {
+					this.video.seek(-600)
+				} else {
+					this.video.seek(-60)
+				}
 				break
-			case 's':
-				this.video.seek(60)
+			case 'm':
+				if(e.shiftKey) {
+					this.video.seek(600)
+				} else {
+					this.video.seek(60)
+				}
 				break
 			case ' ':
 				this.video.pp()
+				break
+			case 'b':
+				if(e.shiftKey) {
+					this.video.seek_f(-1)
+				} else {
+					this.video.seek_f(1)
+				}
 				break
 			case 'i':
 				this.console.putBegin()
@@ -158,6 +177,9 @@ class Application {
 				break
 			case 'c':
 				this.console.wtiin()
+				break
+			case 's':
+				if(e.ctrlKey) this.writeFile()
 				break
 		}
 	}
