@@ -11,7 +11,11 @@ const menu = electron.Menu.buildFromTemplate([
 		submenu: [
 			{
 				label: 'Open Files',
-				click() { alert('test')}
+				click: function(_item:any, _focusedWindow:any){
+					if(_focusedWindow){
+						_focusedWindow.webContents.executeJavaScript('test()')
+					}
+				}
 			},
 			{ role: 'reload'},
 			{ type: 'separator'},
@@ -56,3 +60,4 @@ function createWindow () {
 		mainWindow = null
 	})
 }
+

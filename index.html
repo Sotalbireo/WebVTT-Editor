@@ -37,8 +37,8 @@
 			<td class="console">
 				<p class="text-center text-nowrap mb-0" style="font-size:2em;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
 				<div class="btn-group mb-3 w-100">
-					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg></button>
-					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
+					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25" title="prev 10s"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg></button>
+					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50" title="Play/Pause"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
 					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg></button>
 				</div>
 				<div id="CheckNow" class="mb-2" style="position:relative">
@@ -54,7 +54,7 @@
 					<button id="PutEnd" class="btn btn-primary w-50">終了位置 <small>(<u>o</u>)</small></button>
 				</div>
 				<div class="btn-group w-100">
-					<button id="Write" class="btn btn-sm btn-outline-danger w-75">ファイル更新</button>
+					<button id="Write" class="btn btn-sm btn-outline-danger w-75">ファイル更新 <small>(<u>ctrl-s</u>)</small></button>
 					<button id="WriteReload" class="btn btn-sm btn-outline-danger w-25">＋再読込</button>
 				</div>
 			</td>

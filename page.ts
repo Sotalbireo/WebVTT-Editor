@@ -57,6 +57,7 @@ class VideoController {
 
 class Console {
 	private dom :HTMLTextAreaElement
+	private latestNote :string = ''
 
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
@@ -78,13 +79,16 @@ class Console {
 
 	}
 	putBegin(indent = -0.05) {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
+		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
+		this.dom.value += this.latestNote
 	}
 	putDiv() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
+		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
+		this.dom.value += this.latestNote
 	}
 	putEnd() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
+		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
+		this.dom.value += this.latestNote
 	}
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
@@ -96,6 +100,11 @@ class Console {
 	 */
 	wtiin() {
 		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = app.video.formatTime(app.video.getCurrentTime(), true)
+	}
+	deleteLatestNote() {
+		if (this.latestNote.length === 0) return;
+		this.dom.value = this.dom.value.slice(0, (-1 * this.latestNote.length))
+		this.latestNote = ''
 	}
 }
 
@@ -119,7 +128,7 @@ class Application {
 	private subtlPath   :string
 	private videoElem   :string = 'Video'
 	private consoleElem :string = 'Textarea'
-	public video    :VideoController
+	public video   :VideoController
 	public console :Console
 
 	constructor(_arg:any) {
@@ -181,6 +190,9 @@ class Application {
 			case 's':
 				if(e.ctrlKey) this.writeFile()
 				break
+			case '\\':
+				this.console.deleteLatestNote()
+				break
 		}
 	}
 	private writeFile(flag=false) {
@@ -190,6 +202,12 @@ class Application {
 			if(flag) window.location.reload()
 		})
 	}
+}
+
+
+
+function test() {
+	console.log('test')
 }
 
 
