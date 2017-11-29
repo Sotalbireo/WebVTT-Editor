@@ -11,7 +11,7 @@ interface vttRegion {
 	id?: string,
 	lines?: number,
 	regionanchor?: string,
-	scroll?: "up"|"none",
+	scroll?: "up"|"",
 	viewportanchor?: string,
 	width?: string
 }
@@ -25,13 +25,20 @@ interface vttStyle {
 
 }
 
+enum PositionAlignSetting {
+	"line-left",
+	"center",
+	"line-right",
+	"auto"
+}
+
 interface vttCueSetting {
 	align?: "start"|"center"|"end"|"left"|"right",
 	line?: number|string,
 	position?: string,
 	region?: string,
 	size?: string,
-	vertical? : "rl"|"lr",
+	vertical? : ""|"rl"|"lr"
 }
 
 interface fileInfo {
@@ -54,6 +61,7 @@ class VttParser {
 	regionVerify(v:vttRegion):boolean {
 
 	}
+	detectLineTerminator = s => /\r\n/im.test(s) ? "crlf" : /\r/im.test(s) ? "cr" : "lf"
 }
 
 class Verifications {
