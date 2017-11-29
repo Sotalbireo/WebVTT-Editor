@@ -60,11 +60,25 @@ class Verifications {
 	static percentage(v:string):boolean {
 		if (v.substr(-1) !== '%') return false;
 		const f = Verifications.filterFloat(v.slice(-1))
-		return 0 <= f && f <= 100
+		return Verifications.isBetweenNumber(f, 0, 100)
 	}
 	static timestamp(v:string):boolean {
-		const stamp = /(?:(\d{2,})\:)?(\d{2})\:(\d{2})\.(\d{3})/.exec(v)
-		// [TODO]それぞれ適切な時間範囲に収まっているかチェックしてbool返す
+		const stamp = /(?:(\d*?)\:)?(\d*?)\:(\d*?)\.(\d*?)/.exec(v)
+
+		// Hour: 2桁以上の0以上の整数
+		if(stamp[1].length < 2 || Number(stamp[1]) < 0) return false
+		// Minute: 2桁の0-59の整数
+		if(stamp[2].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[2]), 0, 59)) return false
+		// Second: 2桁の0-59の整数
+		if(stamp[3].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[3]), 0, 59)) return false
+		// millisecond: 3桁の0-999の整数
+		if(stamp[4].length !== 3 || !Verifications.isBetweenNumber(Number(stamp[4]), 0, 999)) return false
+
+		return true
 	}
 	static filterFloat = v => /^(\-|\+)?[0-9]+(\.[0-9]+)?$/.test(v)? Number(v) : NaN
+
+	static isBetweenNumber = (x:number, a:number, b:number) => {
+		return a < b ? a <= x && x <= b : b <= x && x <= a
+	}
 }

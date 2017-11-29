@@ -22,7 +22,8 @@
     "build": "webpack --config webpack.config.js --colors --progress",
     "build:w": "webpack --config webpack.config.js --colors --progress --watch",
     "dev": "webpack-dev-server --config webpack.config.js --hot --inline",
-    "test": "tsc -p . --noEmit --listFiles"
+    "test": "tsc -p . --noEmit --listFiles",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",

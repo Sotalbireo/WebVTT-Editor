@@ -206,12 +206,6 @@ class Application {
 
 
 
-function test() {
-	console.log('test')
-}
-
-
-
 /**
  * Run
  */
