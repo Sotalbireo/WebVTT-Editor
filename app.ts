@@ -1,6 +1,8 @@
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
+const dialog = electron.dialog
+// const ipcMain = electron.ipcMain
 
 const fs = require('fs')
 const path = require('path')
@@ -10,18 +12,38 @@ const menu = electron.Menu.buildFromTemplate([
 		label: 'Edit/View',
 		submenu: [
 			{
-				label: 'Open Files',
-				click: function(_item:any, _focusedWindow:any){
-					if(_focusedWindow){
-						_focusedWindow.webContents.executeJavaScript('test()')
-					}
-				}
+				label: 'Open subtitle File',
+				click: function(_menuItem:any, currentWindow:any){dialog.showOpenDialog(
+					{
+						title: "字幕ファイルを開く",
+						filters: [
+							{name: '[ TXT, VTT ] File', extensions: ['txt', 'vtt']},
+							{name: 'all Files', extensions:['*']}
+						],
+						properties: ['openFile']
+					},
+					((filePaths:string[]) => {
+						console.log(filePaths)
+						currentWindow.webContents.send('tst')
+					})
+				)}
 			},
 			{ role: 'reload'},
 			{ type: 'separator'},
 			{ role: 'toggledevtools'},
 			{ type: 'separator'},
 			{ role: 'close'}
+		]
+	},
+	{
+		label: 'Verify',
+		submenu: [
+			{
+				label: 'for Open file'
+			},
+			{
+				label: 'for Now used file'
+			}
 		]
 	}
 ])
@@ -44,7 +66,8 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		width: 1024,
 		height: 768,
-		resizable: true
+		resizable: true,
+		title: "WEBVTT Editor"
 	})
 	// mainWindow.setMenu(null)
 	mainWindow.setMenu(menu)

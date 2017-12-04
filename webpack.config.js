@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const { CheckerPlugin } = require('awesome-typescript-loader')
 
 const webpackConfig = {
@@ -13,6 +14,7 @@ const webpackConfig = {
     module: {
         rules: [{
             test: /\.tsx?$/,
+            // use: 'ts-loader',
             use: 'awesome-typescript-loader',
             exclude: /node_modules/
         },
@@ -39,7 +41,10 @@ const webpackConfig = {
         publicPath: './assets/'
     },
     plugins: [
-        new CheckerPlugin()
+        new CheckerPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        })
     ],
     resolve: {
         modules: [

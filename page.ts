@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+const ipcRenderer = require('electron')
 const subtitlePath = path.resolve(path.join(__dirname, './data/subtitle.vtt'))
 // const notePath = path.join(__dirname, 'note.txt')
 
@@ -106,6 +107,7 @@ class Console {
 		this.dom.value = this.dom.value.slice(0, (-1 * this.latestNote.length))
 		this.latestNote = ''
 	}
+
 }
 
 
@@ -134,11 +136,16 @@ class Application {
 	constructor(_arg:any) {
 		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
 		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
-		this.console.resize()
 		document.addEventListener('keydown', e=>this.keyEvents(e))
 		window.addEventListener('resize', _=>this.console.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
+		this.console.resize()
+
+		ipcRenderer.once('tst', (event:any, arg:any)=>{
+			console.log(event)
+			console.log(arg)
+		})
 	}
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
