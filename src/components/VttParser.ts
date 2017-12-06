@@ -1,3 +1,5 @@
+
+
 interface vttCue {
 	type: "cue",
 	timing: number[],
@@ -47,9 +49,12 @@ interface fileInfo {
 }
 
 class VttParser {
+	private fileinfo:fileInfo
 
 	constructor() {}
-	parser() {
+	parser(rawstr:string) {
+		this.fileinfo.lineTerminator = this.detectLineTerminator(rawstr);
+		rawstr = rawstr.replace("\u0000","\uFFFD")
 		// すべての「U+0000」を「U+FFFD」で置換
 		// 改行をlfに統一
 		// ファイルが6文字以上あり、かつファイル先頭6字が「WEBVTT」であることを確認する（偽なら終了）
@@ -58,7 +63,7 @@ class VttParser {
 		// 以降ファイル末尾まで、コードポイントのシーケンスごとにブロックの処理をループ
 	}
 
-	regionVerify(v:vttRegion):boolean {
+	regionVerify(v:string):boolean {
 
 	}
 	detectLineTerminator = s => /\r\n/im.test(s) ? "crlf" : /\r/im.test(s) ? "cr" : "lf"
@@ -66,9 +71,9 @@ class VttParser {
 
 class Verifications {
 	static percentage(v:string):boolean {
-		if (v.substr(-1) !== '%') return false;
-		const f = Verifications.filterFloat(v.slice(-1))
-		return Verifications.isBetweenNumber(f, 0, 100)
+		let n
+		if (null === (n = /(\d+?(?:\.\d+?)?)%/.exec(v))) return false;
+		return Verifications.isBetweenNumber(n[1], 0, 100, false)
 	}
 	static timestamp(v:string):boolean {
 		const stamp = /(?:(\d*?)\:)?(\d*?)\:(\d*?)\.(\d*?)/.exec(v)
@@ -84,9 +89,34 @@ class Verifications {
 
 		return true
 	}
+
+	static anchor = (v:string) => {
+		let p = v.split(',')
+		return Verifications.percentage(p[0]) && Verifications.percentage(p[1])
+	}
+
+	static isIntegar = n => Math.round(n) === n
+
 	static filterFloat = v => /^(\-|\+)?[0-9]+(\.[0-9]+)?$/.test(v)? Number(v) : NaN
 
-	static isBetweenNumber = (x:number, a:number, b:number) => {
+	static isBetweenNumber = (x:number, a:number, b:number, isInt=true) => {
+		if(isInt && Math.round(x)!==x) return false
 		return a < b ? a <= x && x <= b : b <= x && x <= a
+	}
+}
+
+class Log {
+	static notExistSignature = () => {
+		console.error('ERR: Not existing "WEBVTT" at top of file.')
+	}
+	static invalidAttribute = (line:number, category:string, attribute:string) => {
+		console.error(`ERR: Invalid attribute; line ${line}, "${category}::${attribute}".`)
+	}
+	static invalidValue = (line:number, attribute:string, value:string) => {
+		console.error(`ERR: Invalid value(s); line ${line}, "${attribute} => ${value}".`)
+	}
+
+	static generalError = (line:number) => {
+		console.error(`ERR: General error; Probably line ${line}.`)
 	}
 }
