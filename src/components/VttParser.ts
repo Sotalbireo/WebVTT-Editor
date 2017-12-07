@@ -54,12 +54,13 @@ class VttParser {
 	constructor() {}
 	parser(rawstr:string) {
 		this.fileinfo.lineTerminator = this.detectLineTerminator(rawstr);
-		rawstr = rawstr.replace("\u0000","\uFFFD")
-		// すべての「U+0000」を「U+FFFD」で置換
-		// 改行をlfに統一
+		// すべての「U+0000」を「U+FFFD」で置換, 改行をlfに統一
+		rawstr = rawstr.replace("\u0000","\uFFFD").replace(/\r\n?/ig, "\n")
 		// ファイルが6文字以上あり、かつファイル先頭6字が「WEBVTT」であることを確認する（偽なら終了）
 		// ファイル先頭の7文字が「U+0020( )」「U+0009(\t)」「U+000A(\n)」以外だった場合終了
 		// 8文字目以降の改行を除く最初の文字が存在しない場合終了
+		if(rawstr.length < 6 || !/^WEBVTT[\u0020\t\n]/.test(rawstr.substr(0,7)) || !/\w/.test(rawstr.substr(7))) return;
+
 		// 以降ファイル末尾まで、コードポイントのシーケンスごとにブロックの処理をループ
 	}
 
