@@ -9,12 +9,13 @@ const webpackConfig = {
     },
 
     // entry: './src/index.tsx',
-    entry: './page.ts',
+    entry: {
+        bundle: './page.ts'
+    },
 
     module: {
         rules: [{
             test: /\.tsx?$/,
-            // use: 'ts-loader',
             use: 'awesome-typescript-loader',
             exclude: /node_modules/
         },
@@ -27,7 +28,7 @@ const webpackConfig = {
         },
         {
             test: /\.(png|svg|jpg|gif)$/,
-            use: 'file-loader'
+            use: 'file-loader?name=[name].[ext]',
         },
         {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -36,15 +37,18 @@ const webpackConfig = {
     },
 
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'assets'),
-        publicPath: './assets/'
     },
     plugins: [
         new CheckerPlugin(),
         new webpack.LoaderOptionsPlugin({
             debug: true
         })
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor',
+        //     chunks: ['bundle']
+        // })
     ],
     resolve: {
         modules: [

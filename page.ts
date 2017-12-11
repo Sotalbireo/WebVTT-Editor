@@ -1,6 +1,8 @@
-import * as fs from 'fs'
-import * as path from 'path'
-const ipcRenderer = require('electron')
+// import * as fs from 'fs'
+// import * as path from 'path'
+const fs = require('fs')
+const path = require('path')
+const { ipcRenderer } = require('electron')
 const subtitlePath = path.resolve(path.join(__dirname, './data/subtitle.vtt'))
 // const notePath = path.join(__dirname, 'note.txt')
 
@@ -56,14 +58,14 @@ class VideoController {
 
 
 
-class Console {
+class Consoles {
 	private dom :HTMLTextAreaElement
 	private latestNote :string = ''
 
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-		fs.readFile(subtitlePath,'utf8',(e,data)=>{
+		fs.readFile(subtitlePath,'utf8',(e:Event,data:any)=>{
 			if(e) {
 				throw e
 			}else{
@@ -112,41 +114,26 @@ class Console {
 
 
 
-// class FileLoader {
-// 	static getFileData(path:string) {
-// 		return (fs.readFile(path,'utf8',(e,data)=>{
-// 			if(e) {
-// 				throw e
-// 			}
-// 			return data
-// 		})
-// 	)}
-// }
-
-
-
 class Application {
 	private videoPath   :string
 	private subtlPath   :string
 	private videoElem   :string = 'Video'
 	private consoleElem :string = 'Textarea'
 	public video   :VideoController
-	public console :Console
+	public console :Consoles
 
 	constructor(_arg:any) {
 		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
-		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
+		this.console = new Consoles({path:this.subtlPath, el:this.consoleElem})
 		document.addEventListener('keydown', e=>this.keyEvents(e))
 		window.addEventListener('resize', _=>this.console.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
 		this.console.resize()
 
-		ipcRenderer.once('tst', (event:any, arg:any)=>{
-			console.log(event)
-			console.log(arg)
-		})
+		this.setIPC()
 	}
+
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
 		switch (e.key.toLowerCase()) {
@@ -202,12 +189,27 @@ class Application {
 				break
 		}
 	}
+
 	private writeFile(flag=false) {
 		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
 		fs.writeFile(subtitlePath, data, (err:any)=>{
 			if(err) throw err
 			if(flag) window.location.reload()
 		})
+	}
+
+	private setIPC() {
+		ipcRenderer.on('Open-subtitle-file', (_:Event, res:string)=>{
+			console.log(res)
+		})
+		ipcRenderer.on('Verify-for-Now-used-file', ()=>{
+
+		})
+		ipcRenderer.on('Verify-for-Open-file', (_:Event, res:string)=>{
+			console.log(res)
+		})
+
+
 	}
 }
 

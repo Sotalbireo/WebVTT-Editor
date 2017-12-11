@@ -1,5 +1,3 @@
-
-
 interface vttCue {
 	type: "cue",
 	timing: number[],
@@ -54,14 +52,20 @@ class VttParser {
 	constructor() {}
 	parser(rawstr:string) {
 		this.fileinfo.lineTerminator = this.detectLineTerminator(rawstr);
+
 		// すべての「U+0000」を「U+FFFD」で置換, 改行をlfに統一
 		rawstr = rawstr.replace("\u0000","\uFFFD").replace(/\r\n?/ig, "\n")
 		// ファイルが6文字以上あり、かつファイル先頭6字が「WEBVTT」であることを確認する（偽なら終了）
 		// ファイル先頭の7文字が「U+0020( )」「U+0009(\t)」「U+000A(\n)」以外だった場合終了
+		if(rawstr.length < 6 || !/^WEBVTT[\u0020\t\n]/.test(rawstr.substr(0,7))) {
+			Log.notExistSignature()
+			return
+		}
 		// 8文字目以降の改行を除く最初の文字が存在しない場合終了
-		if(rawstr.length < 6 || !/^WEBVTT[\u0020\t\n]/.test(rawstr.substr(0,7)) || !/\w/.test(rawstr.substr(7))) return;
+		if(!/\w/.test(rawstr.substr(7))) return
 
 		// 以降ファイル末尾まで、コードポイントのシーケンスごとにブロックの処理をループ
+		while()
 	}
 
 	regionVerify(v:string):boolean {
@@ -110,14 +114,33 @@ class Log {
 	static notExistSignature = () => {
 		console.error('ERR: Not existing "WEBVTT" at top of file.')
 	}
-	static invalidAttribute = (line:number, category:string, attribute:string) => {
-		console.error(`ERR: Invalid attribute; line ${line}, "${category}::${attribute}".`)
+	static invalidAttribute = (l:number, category:string, attribute:string) => {
+		console.error(`ERR: Invalid attribute; line ${l}, "${category}::${attribute}".`)
 	}
-	static invalidValue = (line:number, attribute:string, value:string) => {
-		console.error(`ERR: Invalid value(s); line ${line}, "${attribute} => ${value}".`)
+	static invalidValue = (l:number, attribute:string, value:string) => {
+		console.error(`ERR: Invalid value(s); line ${l}, "${attribute} => ${value}".`)
 	}
 
-	static generalError = (line:number) => {
-		console.error(`ERR: General error; Probably line ${line}.`)
+	static generalError = (l:number) => {
+		console.error(`ERR: General error; Probably line ${l}.`)
+	}
+
+	static invalidTimestamp = (l:number, cat:"Hour"|"Minute"|"Second"|"MilliSecond", val:number) {
+		let stamp
+		switch(cat) {
+			case 'Hour':
+				stamp = 0
+				break
+			case 'Minute':
+				stamp = 'between "00" to "59"'
+				break
+			case 'Second':
+				stamp = 'between "00" to "59"'
+				break
+			case 'MilliSecond':
+				stamp = 'between "000" to "999" (and MUST 3-digits)'
+				break
+		}
+		console.error(`ERR: Invalid timestamp; line ${l}, ${cat}'s value has to fit ${stamp}. But your value is "${val}".`)
 	}
 }

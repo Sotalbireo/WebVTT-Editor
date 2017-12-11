@@ -2,7 +2,7 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const dialog = electron.dialog
-// const ipcMain = electron.ipcMain
+const ipcMain = electron.ipcMain
 
 const fs = require('fs')
 const path = require('path')
@@ -13,7 +13,7 @@ const menu = electron.Menu.buildFromTemplate([
 		submenu: [
 			{
 				label: 'Open subtitle File',
-				click: function(_menuItem:any, currentWindow:any){dialog.showOpenDialog(
+				click: function(){ dialog.showOpenDialog(
 					{
 						title: "字幕ファイルを開く",
 						filters: [
@@ -22,10 +22,10 @@ const menu = electron.Menu.buildFromTemplate([
 						],
 						properties: ['openFile']
 					},
-					((filePaths:string[]) => {
+					(filePaths:string[]) => {
 						console.log(filePaths)
-						currentWindow.webContents.send('tst')
-					})
+						mainWindow.webContents.send('tst', filePaths)
+					}
 				)}
 			},
 			{ role: 'reload'},
