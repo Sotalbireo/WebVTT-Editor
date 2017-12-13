@@ -1,47 +1,48 @@
 const jschardet = require('jschardet')
+import * as fs from 'fs'
 
-interface vttCue {
-	type: "cue",
-	timing: number[],
-	text: string,
-	id?: string,
-	settings?: vttCueSetting[]
-}
+// interface vttCue {
+// 	type: "cue",
+// 	timing: number[],
+// 	text: string,
+// 	id?: string,
+// 	settings?: vttCueSetting[]
+// }
 
-interface vttRegion {
-	type: "region",
-	id?: string,
-	lines?: number,
-	regionanchor?: string,
-	scroll?: "up"|"",
-	viewportanchor?: string,
-	width?: string
-}
+// interface vttRegion {
+// 	type: "region",
+// 	id?: string,
+// 	lines?: number,
+// 	regionanchor?: string,
+// 	scroll?: "up"|"",
+// 	viewportanchor?: string,
+// 	width?: string
+// }
 
-interface vttComment {
-	type: "comment",
-	text: string
-}
+// interface vttComment {
+// 	type: "comment",
+// 	text: string
+// }
 
-interface vttStyle {
+// interface vttStyle {
 
-}
+// }
 
-enum PositionAlignSetting {
-	"line-left",
-	"center",
-	"line-right",
-	"auto"
-}
+// enum PositionAlignSetting {
+// 	"line-left",
+// 	"center",
+// 	"line-right",
+// 	"auto"
+// }
 
-interface vttCueSetting {
-	align?: "start"|"center"|"end"|"left"|"right",
-	line?: number|string,
-	position?: string,
-	region?: string,
-	size?: string,
-	vertical? : ""|"rl"|"lr"
-}
+// interface vttCueSetting {
+// 	align?: "start"|"center"|"end"|"left"|"right",
+// 	line?: number|string,
+// 	position?: string,
+// 	region?: string,
+// 	size?: string,
+// 	vertical? : ""|"rl"|"lr"
+// }
 
 interface fileInfo {
 	lineTerminator: "crlf"|"lf"|"cr",
@@ -51,7 +52,12 @@ interface fileInfo {
 class VttParser {
 	private fileinfo:fileInfo
 
-	constructor() {}
+	static test(filepath:string) {
+		const fd = fs.openSync(filepath, 'r')
+		const bin = fs.readSync(fd, new Uint8Array(2), 0, 10, 0)
+		console.log(bin)
+	}
+
 	parser(rawstr:string) {
 		let encoding = jschardet.detect(rawstr).encoding.toLowerCase()
 		if(encoding !== 'utf-8' && encoding !== 'ascii') {
@@ -74,32 +80,35 @@ class VttParser {
 		if(!/\w/.test(rawstr.substr(7))) return
 
 		// 以降ファイル末尾まで、コードポイントのシーケンスごとにブロックの処理をループ
-		while()
+		// while()
+		Verifications.isIntegar(12)
 	}
 
-	regionVerify(v:string):boolean {
+	// regionVerify(v:string):boolean {
 
-	}
-	detectLineTerminator = s => /\r\n/im.test(s) ? "crlf" : /\r/im.test(s) ? "cr" : "lf"
+	// }
+	detectLineTerminator = (s:any) => /\r\n/im.test(s) ? "crlf" : /\r/im.test(s) ? "cr" : "lf"
 }
 
 class Verifications {
 	static percentage(v:string):boolean {
 		let n
 		if (null === (n = /(\d+?(?:\.\d+?)?)%/.exec(v))) return false;
-		return Verifications.isBetweenNumber(n[1], 0, 100, false)
+		return Verifications.isBetweenNumber(parseInt(n[1],10), 0, 100, false)
 	}
 	static timestamp(v:string):boolean {
-		const stamp = /(?:(\d*?)\:)?(\d*?)\:(\d*?)\.(\d*?)/.exec(v)
+		const stamp = /(?:(\d*?)\:)?(\d*?)\:(\d*?)\.(\d*?)/.exec(v)!
 
-		// Hour: 2桁以上の0以上の整数
-		if(stamp[1].length < 2 || Number(stamp[1]) < 0) return false
-		// Minute: 2桁の0-59の整数
-		if(stamp[2].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[2]), 0, 59)) return false
-		// Second: 2桁の0-59の整数
-		if(stamp[3].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[3]), 0, 59)) return false
-		// millisecond: 3桁の0-999の整数
-		if(stamp[4].length !== 3 || !Verifications.isBetweenNumber(Number(stamp[4]), 0, 999)) return false
+		if(typeof stamp[1]!=='undefined' && typeof stamp[2]!=='undefined' && typeof stamp[3]!=='undefined' && typeof stamp[4]!=='undefined') {
+			// Hour: 2桁以上の0以上の整数
+			if(stamp[1].length < 2 || Number(stamp[1]) < 0) return false
+			// Minute: 2桁の0-59の整数
+			if(stamp[2].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[2]), 0, 59)) return false
+			// Second: 2桁の0-59の整数
+			if(stamp[3].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[3]), 0, 59)) return false
+			// millisecond: 3桁の0-999の整数
+			if(stamp[4].length !== 3 || !Verifications.isBetweenNumber(Number(stamp[4]), 0, 999)) return false
+		}else{return false}
 
 		return true
 	}
@@ -109,9 +118,9 @@ class Verifications {
 		return Verifications.percentage(p[0]) && Verifications.percentage(p[1])
 	}
 
-	static isIntegar = n => Math.round(n) === n
+	static isIntegar = (n:any) => Math.round(n) === n
 
-	static filterFloat = v => /^(\-|\+)?[0-9]+(\.[0-9]+)?$/.test(v)? Number(v) : NaN
+	static filterFloat = (v:any) => /^(\-|\+)?[0-9]+(\.[0-9]+)?$/.test(v)? Number(v) : NaN
 
 	static isBetweenNumber = (x:number, a:number, b:number, isInt=true) => {
 		if(isInt && Math.round(x)!==x) return false
@@ -121,7 +130,7 @@ class Verifications {
 
 class Log {
 	static notUTF8 = () => {
-		console.error('ERR: Character code has to UTF-8 ( with or without a BOM ).')
+		console.error('ERR: Character code must UTF-8 ( with or without a BOM ).')
 	}
 	static notExistSignature = () => {
 		console.error('ERR: Not existing "WEBVTT" at top of file.')
@@ -137,22 +146,22 @@ class Log {
 		console.error(`ERR: General error; Probably line ${l}.`)
 	}
 
-	static invalidTimestamp = (l:number, cat:"Hour"|"Minute"|"Second"|"MilliSecond", val:string) {
-		let stamp
+	static invalidTimestamp = (l:number, cat:"Hour"|"Minute"|"Second"|"MilliSecond", val:string) => {
+		let stamp = ''
 		switch(cat) {
 			case 'Hour':
-				stamp = ''
+				stamp = 'be a positive number of 2-digits or more. (ex: "00", "01", ...)'
 				break
 			case 'Minute':
-				stamp = 'fit between "00" to "59"'
+				stamp = 'fit between "00" to "59" (and must 2-digits.)'
 				break
 			case 'Second':
-				stamp = 'fit between "00" to "59"'
+				stamp = 'fit between "00" to "59" (and must 2-digits.)'
 				break
 			case 'MilliSecond':
-				stamp = 'fit between "000" to "999" (and MUST 3-digits)'
+				stamp = 'fit between "000" to "999" (and must 3-digits.)'
 				break
 		}
-		console.error(`ERR: Invalid timestamp; line ${l}, ${cat}'s value has to ${stamp}. But your value is "${val}".`)
+		console.error(`ERR: Invalid timestamp; line ${l}, ${cat}'s value must ${stamp}. But your value is "${val}".`)
 	}
 }

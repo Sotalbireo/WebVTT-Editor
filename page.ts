@@ -1,12 +1,10 @@
-// import * as fs from 'fs'
-// import * as path from 'path'
 const fs = require('fs')
 const path = require('path')
 const { ipcRenderer } = require('electron')
 const subtitlePath = path.resolve(path.join(__dirname, './data/subtitle.vtt'))
 // const notePath = path.join(__dirname, 'note.txt')
 
-let app :Application
+let emmy :Emmy
 
 
 
@@ -74,23 +72,23 @@ class Consoles {
 		})
 
 		document.querySelector('#CheckNow button')!.addEventListener('click',_=>this.wtiin())
-		document.getElementById('Prev10')!.addEventListener('click',_=>app.video.seek(-10))
-		document.getElementById('PlayPause')!.addEventListener('click',_=>app.video.pp())
-		document.getElementById('Fwd10')!.addEventListener('click',_=>app.video.seek(10))
+		document.getElementById('Prev10')!.addEventListener('click',_=>emmy.video.seek(-10))
+		document.getElementById('PlayPause')!.addEventListener('click',_=>emmy.video.pp())
+		document.getElementById('Fwd10')!.addEventListener('click',_=>emmy.video.seek(10))
 		document.getElementById('PutBegin')!.addEventListener('click',_=>this.putBegin())
 		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
 
 	}
 	putBegin(indent = -0.05) {
-		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(indent), true)} --> `
 		this.dom.value += this.latestNote
 	}
 	putDiv() {
-		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${app.video.formatTime(app.video.getCurrentTime(), true)} --> `
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${emmy.video.formatTime(emmy.video.getCurrentTime(), true)} --> `
 		this.dom.value += this.latestNote
 	}
 	putEnd() {
-		this.latestNote = `${app.video.formatTime(app.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
 		this.dom.value += this.latestNote
 	}
 	resize() {
@@ -102,7 +100,7 @@ class Consoles {
 	 * What time is it now?
 	 */
 	wtiin() {
-		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = app.video.formatTime(app.video.getCurrentTime(), true)
+		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = emmy.video.formatTime(emmy.video.getCurrentTime(), true)
 	}
 	deleteLatestNote() {
 		if (this.latestNote.length === 0) return;
@@ -114,7 +112,7 @@ class Consoles {
 
 
 
-class Application {
+class Emmy {
 	private videoPath   :string
 	private subtlPath   :string
 	private videoElem   :string = 'Video'
@@ -219,7 +217,7 @@ class Application {
  * Run
  */
 const Init = ()=>{
-	app = new Application({})
+	emmy = new Emmy({})
 }
 if(document.readyState!=='loading'){
 	Init()

@@ -17,11 +17,11 @@
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
   "main": "app.js",
   "scripts": {
-    "start": "webpack --config webpack.config.js --colors && electron .",
+    "start": "webpack --config webpack.config.js --colors && npm run tsc:app && npm run electron",
     "electron": "electron .",
-    "build": "webpack --config webpack.config.js --colors --progress",
+    "build": "webpack --config webpack.config.js --colors --progress && npm run tsc:app",
     "build:w": "webpack --config webpack.config.js --colors --progress --watch",
-    "test": "tsc -p . --noEmit --listFiles",
+    "tsc:app": "tsc app.ts --strict --lib DOM,ES6,ScriptHost --module CommonJS --moduleResolution Node --noEmitOnError --pretty --target ES2017",
     "postinstall": "npm run build"
   },
   "devDependencies": {

@@ -1,16 +1,20 @@
 const path = require('path')
 const webpack = require('webpack')
 const { CheckerPlugin } = require('awesome-typescript-loader')
+const ExternalsPlugin = webpack.ExternalsPlugin
 
 const webpackConfig = {
-    target: 'electron',
+    target: 'electron-renderer',
     node: {
-        __dirname: true
+        __dirname: false
     },
 
-    // entry: './src/index.tsx',
     entry: {
-        bundle: './page.ts'
+        // entry: './src/index.tsx',
+        // vendor: ['fs'],
+        // app: './app.ts',
+        bundle: './page.ts',
+        parser: './src/components/VttParser.ts'
     },
 
     module: {
@@ -28,7 +32,7 @@ const webpackConfig = {
         },
         {
             test: /\.(png|svg|jpg|gif)$/,
-            use: 'file-loader?name=[name].[ext]',
+            use: 'file-loader?name=[name].[ext]'
         },
         {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -39,16 +43,18 @@ const webpackConfig = {
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'assets'),
+        // libraryTarget: 'commonjs2',
+        jsonpFunction: 'vendor'
     },
     plugins: [
         new CheckerPlugin(),
         new webpack.LoaderOptionsPlugin({
             debug: true
-        })
+        // }),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'vendor',
-        //     chunks: ['bundle']
-        // })
+        //     minChunks: Infinity
+        })
     ],
     resolve: {
         modules: [
@@ -59,7 +65,8 @@ const webpackConfig = {
     },
 
     devServer: {
-        port: 8000
+        port: 8000,
+        progress: true
     }
 }
 

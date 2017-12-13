@@ -4,9 +4,8 @@ const BrowserWindow = electron.BrowserWindow
 const dialog = electron.dialog
 const ipcMain = electron.ipcMain
 
-const fs = require('fs')
-const path = require('path')
-const url = require('url')
+const { VttParser } = require('./assets/parser')
+
 const menu = electron.Menu.buildFromTemplate([
 	{
 		label: 'Edit/View',
@@ -17,7 +16,7 @@ const menu = electron.Menu.buildFromTemplate([
 					{
 						title: "字幕ファイルを開く",
 						filters: [
-							{name: '[ TXT, VTT ] File', extensions: ['txt', 'vtt']},
+							{name: 'VTT File',  extensions:['vtt']},
 							{name: 'all Files', extensions:['*']}
 						],
 						properties: ['openFile']
@@ -25,6 +24,7 @@ const menu = electron.Menu.buildFromTemplate([
 					(filePaths:string[]) => {
 						console.log(filePaths)
 						mainWindow.webContents.send('tst', filePaths)
+						console.log(VttParser)
 					}
 				)}
 			},
@@ -69,11 +69,10 @@ function createWindow () {
 		resizable: true,
 		title: "WEBVTT Editor"
 	})
-	// mainWindow.setMenu(null)
 	mainWindow.setMenu(menu)
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'index.html'),
-		protocol: 'file:',
+	mainWindow.loadURL(require('url').format({
+		pathname: require('path').join(__dirname, 'index.html'),
+		protocol: 'file',
 		slashes: true
 	}))
 

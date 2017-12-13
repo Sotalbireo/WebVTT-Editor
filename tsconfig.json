@@ -35,7 +35,10 @@
 				"node_modules"
 		],
 		"awesomeTypescriptLoaderOptions": {
-			"module": "CommonJS",
+			"jsx": "preserve",
+			"module": "commonjs",
 			"moduleResolution": "Node",
+			"strict": true,
+			"skipLibCheck": true
 		}
 }
