@@ -1,3 +1,5 @@
+const jschardet = require('jschardet')
+
 interface vttCue {
 	type: "cue",
 	timing: number[],
@@ -51,6 +53,13 @@ class VttParser {
 
 	constructor() {}
 	parser(rawstr:string) {
+		let encoding = jschardet.detect(rawstr).encoding.toLowerCase()
+		if(encoding !== 'utf-8' && encoding !== 'ascii') {
+			console.log(encoding)
+			Log.notUTF8()
+			return
+		}
+
 		this.fileinfo.lineTerminator = this.detectLineTerminator(rawstr);
 
 		// すべての「U+0000」を「U+FFFD」で置換, 改行をlfに統一
@@ -111,6 +120,9 @@ class Verifications {
 }
 
 class Log {
+	static notUTF8 = () => {
+		console.error('ERR: Character code has to UTF-8 ( with or without a BOM ).')
+	}
 	static notExistSignature = () => {
 		console.error('ERR: Not existing "WEBVTT" at top of file.')
 	}
@@ -125,22 +137,22 @@ class Log {
 		console.error(`ERR: General error; Probably line ${l}.`)
 	}
 
-	static invalidTimestamp = (l:number, cat:"Hour"|"Minute"|"Second"|"MilliSecond", val:number) {
+	static invalidTimestamp = (l:number, cat:"Hour"|"Minute"|"Second"|"MilliSecond", val:string) {
 		let stamp
 		switch(cat) {
 			case 'Hour':
-				stamp = 0
+				stamp = ''
 				break
 			case 'Minute':
-				stamp = 'between "00" to "59"'
+				stamp = 'fit between "00" to "59"'
 				break
 			case 'Second':
-				stamp = 'between "00" to "59"'
+				stamp = 'fit between "00" to "59"'
 				break
 			case 'MilliSecond':
-				stamp = 'between "000" to "999" (and MUST 3-digits)'
+				stamp = 'fit between "000" to "999" (and MUST 3-digits)'
 				break
 		}
-		console.error(`ERR: Invalid timestamp; line ${l}, ${cat}'s value has to fit ${stamp}. But your value is "${val}".`)
+		console.error(`ERR: Invalid timestamp; line ${l}, ${cat}'s value has to ${stamp}. But your value is "${val}".`)
 	}
 }
