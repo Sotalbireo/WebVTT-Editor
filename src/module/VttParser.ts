@@ -1,4 +1,3 @@
-const jschardet = require('jschardet')
 import * as fs from 'fs'
 
 // interface vttCue {
@@ -49,17 +48,24 @@ interface fileInfo {
 	hasBOM: boolean
 }
 
-class VttParser {
+export class VttParser {
+	jschardet:any
 	private fileinfo:fileInfo
 
-	static test(filepath:string) {
+	constructor(){
+		this.jschardet = require('jschardet')
+	}
+
+	test(filepath:string) {
 		const fd = fs.openSync(filepath, 'r')
-		const bin = fs.readSync(fd, new Uint8Array(2), 0, 10, 0)
+		console.log(fd)
+		const bin = new Buffer(10)
+		fs.readSync(fd, bin, 0, 10, 0)
 		console.log(bin)
 	}
 
 	parser(rawstr:string) {
-		let encoding = jschardet.detect(rawstr).encoding.toLowerCase()
+		let encoding = this.jschardet.detect(rawstr).encoding.toLowerCase()
 		if(encoding !== 'utf-8' && encoding !== 'ascii') {
 			console.log(encoding)
 			Log.notUTF8()
@@ -99,16 +105,14 @@ class Verifications {
 	static timestamp(v:string):boolean {
 		const stamp = /(?:(\d*?)\:)?(\d*?)\:(\d*?)\.(\d*?)/.exec(v)!
 
-		if(typeof stamp[1]!=='undefined' && typeof stamp[2]!=='undefined' && typeof stamp[3]!=='undefined' && typeof stamp[4]!=='undefined') {
-			// Hour: 2桁以上の0以上の整数
-			if(stamp[1].length < 2 || Number(stamp[1]) < 0) return false
-			// Minute: 2桁の0-59の整数
-			if(stamp[2].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[2]), 0, 59)) return false
-			// Second: 2桁の0-59の整数
-			if(stamp[3].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[3]), 0, 59)) return false
-			// millisecond: 3桁の0-999の整数
-			if(stamp[4].length !== 3 || !Verifications.isBetweenNumber(Number(stamp[4]), 0, 999)) return false
-		}else{return false}
+		// Hour: 2桁以上の0以上の整数
+		if(stamp[1].length < 2 || Number(stamp[1]) < 0) return false
+		// Minute: 2桁の0-59の整数
+		if(stamp[2].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[2]), 0, 59)) return false
+		// Second: 2桁の0-59の整数
+		if(stamp[3].length !== 2 || !Verifications.isBetweenNumber(Number(stamp[3]), 0, 59)) return false
+		// millisecond: 3桁の0-999の整数
+		if(stamp[4].length !== 3 || !Verifications.isBetweenNumber(Number(stamp[4]), 0, 999)) return false
 
 		return true
 	}

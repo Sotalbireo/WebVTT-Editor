@@ -4,7 +4,6 @@ const BrowserWindow = electron.BrowserWindow
 const dialog = electron.dialog
 const ipcMain = electron.ipcMain
 
-const { VttParser } = require('./assets/parser')
 
 const menu = electron.Menu.buildFromTemplate([
 	{
@@ -22,9 +21,7 @@ const menu = electron.Menu.buildFromTemplate([
 						properties: ['openFile']
 					},
 					(filePaths:string[]) => {
-						console.log(filePaths)
-						mainWindow.webContents.send('tst', filePaths)
-						console.log(VttParser)
+						mainWindow.webContents.send('Open-subtitle-file', filePaths[0])
 					}
 				)}
 			},
@@ -42,7 +39,8 @@ const menu = electron.Menu.buildFromTemplate([
 				label: 'for Open file'
 			},
 			{
-				label: 'for Now used file'
+				label: 'for Now used file',
+				click: ()=>{mainWindow.webContents.send('Verify-for-Now-used-file', 1)}
 			}
 		]
 	}

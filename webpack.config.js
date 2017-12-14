@@ -11,10 +11,8 @@ const webpackConfig = {
 
     entry: {
         // entry: './src/index.tsx',
-        // vendor: ['fs'],
-        // app: './app.ts',
         bundle: './page.ts',
-        parser: './src/components/VttParser.ts'
+        parser: './src/module/VttParser.ts'
     },
 
     module: {
@@ -43,7 +41,6 @@ const webpackConfig = {
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'assets'),
-        // libraryTarget: 'commonjs2',
         jsonpFunction: 'vendor'
     },
     plugins: [
