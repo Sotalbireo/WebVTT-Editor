@@ -17,7 +17,7 @@
 		.fullWH{height:100vh;width:100vw;margin:0!important;}
 		video.vimeo::cue{font-weight:bold}
 	</style>
-	<script src="assets/bundle.js"></script>
+	<script src="index.js"></script>
 </head>
 <body>
 <div id="root" class="fullWH" style="display:none"></div>
@@ -30,22 +30,22 @@
 		<tr>
 			<td id="VideoPreviewer">
 				<video id="Video" controls preload="auto" width="100%" height="auto" crossorigin="anonymous" class="vimeo">
-				<source src="data/video.mp4" type="video/mp4">
-				<track label="Japanese" kind="subtitles" src="data/subtitle.vtt" srclang="ja" default></track>
+				<source src="../data/video.mp4" type="video/mp4">
+				<track label="Japanese" kind="subtitles" src="../data/subtitle.vtt" srclang="ja" default></track>
 				</video>
 			</td>
 			<td class="console">
 				<p class="text-center text-nowrap mb-0" style="font-size:2em;"><span id="CurrentTime">xx:xx:xx</span> / <span id="TotalTime">xx:xx:xx</span></p>
 				<div class="btn-group mb-3 w-100">
-					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25" title="prev 10s"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg></button>
-					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50" title="Play/Pause"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
-					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg></button>
+					<button id="Prev10" class="btn btn-outline-info py-1 lh-1 w-25" title="prev 10s"><svg width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M44.082 14L31.294 25.879V14L11.918 32l19.376 18V38.121L44.082 50z"/></svg></button>
+					<button id="PlayPause" class="btn btn-outline-primary py-1 lh-1 w-50" title="Play/Pause"><svg width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#0275d8" cx="32" cy="32.001" r="30"/><g fill="#FFF"><path d="M13 15.999l19 16-19 16zM35.8 15.999h5.7v32h-5.7zM45.3 15.999H51v32h-5.7z"/></g></svg></button>
+					<button id="Fwd10" class="btn btn-outline-info py-1 lh-1 w-25"><svg width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#5bc0de" cx="32" cy="32" r="30"/><path fill="#FFF" d="M19.918 14l12.788 11.879V14l19.376 18-19.376 18V38.121L19.918 50z"/></svg></button>
 				</div>
 				<div id="CheckNow" class="mb-2" style="position:relative">
 					<div class="input-group">
 						<input type="text" class="form-control" onclick="this.select()" readonly>
 						<span class="input-group-btn">
-							<button class="btn btn-info py-1 lh-1"><svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#FFF" cx="32" cy="32" r="30"/><path fill="#5bc0de" d="M30 6h4v32h-4z"/><path fill="#5bc0de" d="M26.001 30h24v4h-24z"/><circle fill="#5bc0de" cx="32" cy="32" r="4"/><circle fill="#5bc0de" cx="32" cy="32" r="3"/></svg></button>
+							<button class="btn btn-info py-1 lh-1"><svg width="1.5rem" height="1.5rem" viewBox="0 0 64 64"><circle fill="#FFF" cx="32" cy="32" r="30"/><path fill="#5bc0de" d="M30 6h4v32h-4z"/><path fill="#5bc0de" d="M26.001 30h24v4h-24z"/><circle fill="#5bc0de" cx="32" cy="32" r="4"/><circle fill="#5bc0de" cx="32" cy="32" r="3"/></svg></button>
 						</span>
 					</div>
 				</div>

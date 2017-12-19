@@ -10,9 +10,7 @@ const webpackConfig = {
     },
 
     entry: {
-        // entry: './src/index.tsx',
-        bundle: './page.ts',
-        parser: './src/module/VttParser.ts'
+        index: './src/renderer/index.ts'
     },
 
     module: {
@@ -40,7 +38,7 @@ const webpackConfig = {
 
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'assets'),
+        path: path.resolve(__dirname, 'dist'),
         jsonpFunction: 'vendor'
     },
     plugins: [

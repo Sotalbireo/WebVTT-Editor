@@ -1,11 +1,11 @@
 node_modules/
 npm-debug*
 WebVTT-Editor*/
-assets/
+dist/
 data/
 *.js
 *.map
 
 *.vtt
 
-!/webpack.config.js
+!/webpack.config.*

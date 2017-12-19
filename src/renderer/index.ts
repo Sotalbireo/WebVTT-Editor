@@ -1,8 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
 const { ipcRenderer } = require('electron')
-const remote = require('electron').remote
-const subtitlePath = path.resolve(path.join(__dirname, './data/subtitle.vtt'))
+// const remote = require('electron').remote
+const subtitlePath = path.resolve(path.join(__dirname, '../data/subtitle.vtt'))
 // const notePath = path.join(__dirname, 'note.txt')
 // import { VttParser } from './src/module/VttParser'
 
@@ -204,8 +204,6 @@ class Emmy {
 		})
 		ipcRenderer.on('Verify-for-Now-used-file', ()=>{
 			console.log(subtitlePath)
-			let test = remote.require('./src/module/electronVtt')
-			test()
 			// let vttParser = new VttParser()
 			// vttParser.test(subtitlePath)
 		})
