@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const { CheckerPlugin } = require('awesome-typescript-loader')
+const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const ExternalsPlugin = webpack.ExternalsPlugin
 
 const webpackConfig = {
@@ -16,7 +16,7 @@ const webpackConfig = {
     module: {
         rules: [{
             test: /\.tsx?$/,
-            use: 'awesome-typescript-loader',
+            use: 'awesome-typescript-loader?{configFileName:"tsconfig.main.json"}',
             exclude: /node_modules/
         }]
     },
