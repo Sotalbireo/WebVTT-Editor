@@ -9,3 +9,4 @@ data/
 *.vtt
 
 !/webpack.config.*
+!test/**

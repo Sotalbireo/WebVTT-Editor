@@ -61,9 +61,16 @@ class VideoController {
 class Consoles {
 	private dom :HTMLTextAreaElement
 	private latestNote :string = ''
+	private mikoto = 0
+	get misaka() {
+		this.mikoto++
+		return ('00000'+this.mikoto).substr(-6)
+	}
 
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
+
+		this.mikoto = Math.floor(Math.random()*100000)
 
 		fs.readFile(subtitlePath,'utf8',(e,data:any)=>{
 			if(e) {
@@ -86,11 +93,11 @@ class Consoles {
 		this.dom.value += this.latestNote
 	}
 	putDiv() {
-		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n${emmy.video.formatTime(emmy.video.getCurrentTime(), true)} --> `
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${this.misaka}\n\n${emmy.video.formatTime(emmy.video.getCurrentTime(), true)} --> `
 		this.dom.value += this.latestNote
 	}
 	putEnd() {
-		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${Math.floor(Math.random()*100000)}\n\n`
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${this.misaka}\n\n`
 		this.dom.value += this.latestNote
 	}
 	resize() {
