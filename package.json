@@ -21,10 +21,10 @@
     "electron": "npx electron .",
     "cp:html": "cpx src/index.html dist",
     "build": "npm-run-all build:*",
-    "build:m": "webpack --config webpack.config.main.js --colors --progress -p",
-    "build:r": "webpack --config webpack.config.renderer.js --colors --progress",
-    "build:m:w": "webpack --config webpack.config.main.js --colors --progress --watch",
-    "build:r:w": "webpack --config webpack.config.renderer.js --colors --progress --watch",
+    "build:m": "webpack --config webpack.config.main.js --colors -p",
+    "build:r": "webpack --config webpack.config.renderer.js --colors",
+    "build:m:w": "webpack --config webpack.config.main.js --colors --watch",
+    "build:r:w": "webpack --config webpack.config.renderer.js --colors --watch",
     "postinstall": "npm run build"
   },
   "devDependencies": {

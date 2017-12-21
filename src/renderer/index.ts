@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import MargeViT from '../module/MargeTiV'
 const { ipcRenderer } = require('electron')
 // const remote = require('electron').remote
 const subtitlePath = path.resolve(path.join(__dirname, '../data/subtitle.vtt'))
@@ -205,6 +206,15 @@ class Emmy {
 		})
 	}
 
+
+
+	private MergeTXTintoVTT(args:any) {
+		const marge = new MargeViT()
+		marge.exe(args)
+	}
+
+
+
 	private setIPC() {
 		ipcRenderer.on('Open-subtitle-file', (_:Event, res:string)=>{
 			console.log(res)
@@ -216,6 +226,12 @@ class Emmy {
 		})
 		ipcRenderer.on('Verify-for-Open-file', (_:Event, res:string)=>{
 			console.log(res)
+		})
+		ipcRenderer.on('Merge-text-into-Vtt', (_:Event, _res:any)=>{
+			this.MergeTXTintoVTT({
+				txtPath: path.resolve(path.join(__dirname, '../data/noteTest.txt')),
+				vttPath: path.resolve(path.join(__dirname, '../data/subtitleTest.vtt'))
+			})
 		})
 
 

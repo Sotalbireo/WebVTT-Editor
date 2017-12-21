@@ -28,9 +28,8 @@ const menu = electron.Menu.buildFromTemplate([
 			},
 			{ type: 'separator'},
 			{
-				label: 'Combine subtitle & timestamp files',
-				click: function() {
-				}
+				label: 'Merge text into Vtt (experimental)',
+				click: function(){mainWindow.webContents.send('Merge-text-into-Vtt'), 1}
 			},
 			{ type: 'separator'},
 			{ role: 'reload'},
