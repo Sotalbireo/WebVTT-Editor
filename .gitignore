@@ -1,8 +1,12 @@
 node_modules/
 npm-debug*
 WebVTT-Editor*/
+dist/
+data/
 *.js
 *.map
 
 *.vtt
-*.mp4
+
+!/webpack.config.*
+!test/**

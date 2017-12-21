@@ -4,6 +4,5 @@ NOTE
 Timestamp's format is "HH:MM:SS.sss"
 
 00:00:00.010 --> 00:00:05.990
-"subtitle.ja.vtt"
 This subtitles are the SAMPLE.
 この字幕はサンプルです。

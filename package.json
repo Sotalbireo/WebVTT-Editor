@@ -15,21 +15,40 @@
     "url": "http://github.com/sotalbireo/webvtt-editor.git"
   },
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "electron .",
-    "compile": "tsc -p .",
-    "test": "tsc -p . --noEmit"
+    "start": "npm-run-all cp:html build:* electron",
+    "electron": "npx electron .",
+    "cp:html": "cpx src/index.html dist",
+    "build": "npm-run-all build:*",
+    "build:m": "webpack --config webpack.config.main.js --colors -p",
+    "build:r": "webpack --config webpack.config.renderer.js --colors",
+    "build:m:w": "webpack --config webpack.config.main.js --colors --watch",
+    "build:r:w": "webpack --config webpack.config.renderer.js --colors --watch",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
-    "@types/electron": "^1.4.31",
-    "@types/node": "^7.0.4",
-    "@types/react": "^15.0.14",
-    "@types/react-dom": "^0.14.23",
-    "electron": "^1.4.14",
-    "electron-packager": "^8.5.1",
-    "npm-tasks": "^1.4.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "@types/electron": "^1.6.10",
+    "@types/node": "^8.0.58",
+    "@types/react": "^16.0.29",
+    "@types/react-dom": "^16.0.2",
+    "awesome-typescript-loader": "^3.4.1",
+    "cpx": "^1.5.0",
+    "css-loader": "^0.28.7",
+    "electron-packager": "^10.1.0",
+    "file-loader": "^1.1.5",
+    "npm-run-all": "^4.1.2",
+    "semantic-ui-react": "^0.76.0",
+    "style-loader": "^0.19.0",
+    "typescript": "^2.6.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "electron": "^1.7.10",
+    "jschardet": "^1.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.76.0"
   }
 }

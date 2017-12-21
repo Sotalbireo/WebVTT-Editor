@@ -1,8 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-const filePath = path.join(__dirname, 'subtitle.ja.vtt')
+import MargeViT from '../module/MargeTiV'
+const { ipcRenderer } = require('electron')
+// const remote = require('electron').remote
+const subtitlePath = path.resolve(path.join(__dirname, '../data/subtitle.vtt'))
+// const notePath = path.join(__dirname, 'note.txt')
+// import { VttParser } from './src/module/VttParser'
 
-let app :Application
+let emmy :Emmy
 
 
 
@@ -12,7 +17,6 @@ class VideoController {
 	constructor(_arg:{path:string,el:string}) {
 		this.video = document.getElementById('Video')! as HTMLVideoElement
 		this.video.addEventListener('timeupdate', _=>this.updateCurrentTime())
-		this.video.addEventListener('timeupdate', _=>this.updateProgressbar())
 		this.video.addEventListener('loadedmetadata', _=>this.init())
 	}
 	formatTime(t:number, f=false) {
@@ -38,6 +42,10 @@ class VideoController {
 	seek(s:number) {
 		this.video.currentTime += s
 	}
+	seek_f(f:number) {
+		this.video.pause()
+		this.video.currentTime += f*0.166 // ~1/60
+	}
 	init() {
 		const el1 = 'CurrentTime'
 		const el2 = 'TotalTime'
@@ -47,23 +55,25 @@ class VideoController {
 	updateCurrentTime() {
 		document.getElementById('CurrentTime')!.textContent = this.formatTime(this.getCurrentTime())
 	}
-	updateProgressbar() {
-		// WIP: でもこれいる？
-		// let el = document.getElementById('ProgressBar')!
-		// let pos = this.getCurrentTime() / this.duration
-		// console.log(pos)
-	}
 }
 
 
 
-class Console {
+class Consoles {
 	private dom :HTMLTextAreaElement
+	private latestNote :string = ''
+	private mikoto = 0
+	get misaka() {
+		this.mikoto++
+		return ('00000'+this.mikoto).substr(-6)
+	}
 
 	constructor(_arg:{path:string,el:string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 
-		fs.readFile(filePath,'utf8',(e,data)=>{
+		this.mikoto = Math.floor(Math.random()*100000)
+
+		fs.readFile(subtitlePath,'utf8',(e,data:any)=>{
 			if(e) {
 				throw e
 			}else{
@@ -72,18 +82,24 @@ class Console {
 		})
 
 		document.querySelector('#CheckNow button')!.addEventListener('click',_=>this.wtiin())
-		document.getElementById('Prev10')!.addEventListener('click',_=>app.video.seek(-10))
-		document.getElementById('PlayPause')!.addEventListener('click',_=>app.video.pp())
-		document.getElementById('Fwd10')!.addEventListener('click',_=>app.video.seek(10))
+		document.getElementById('Prev10')!.addEventListener('click',_=>emmy.video.seek(-10))
+		document.getElementById('PlayPause')!.addEventListener('click',_=>emmy.video.pp())
+		document.getElementById('Fwd10')!.addEventListener('click',_=>emmy.video.seek(10))
 		document.getElementById('PutBegin')!.addEventListener('click',_=>this.putBegin())
 		document.getElementById('PutEnd')!.addEventListener('click',_=>this.putEnd())
 
 	}
 	putBegin(indent = -0.05) {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(indent), true)} --> `
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(indent), true)} --> `
+		this.dom.value += this.latestNote
+	}
+	putDiv() {
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${this.misaka}\n\n${emmy.video.formatTime(emmy.video.getCurrentTime(), true)} --> `
+		this.dom.value += this.latestNote
 	}
 	putEnd() {
-		this.dom.value += `${app.video.formatTime(app.video.getCurrentTime(), true)}\nLoemIpsum${Math.floor(Math.random()*100000)}\n\n`
+		this.latestNote = `${emmy.video.formatTime(emmy.video.getCurrentTime(), true)}\n${this.misaka}\n\n`
+		this.dom.value += this.latestNote
 	}
 	resize() {
 		let d = document.getElementById('TextareaFrame')!
@@ -94,87 +110,131 @@ class Console {
 	 * What time is it now?
 	 */
 	wtiin() {
-		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = app.video.formatTime(app.video.getCurrentTime(), true)
+		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = emmy.video.formatTime(emmy.video.getCurrentTime(), true)
 	}
+	deleteLatestNote() {
+		if (this.latestNote.length === 0) return;
+		this.dom.value = this.dom.value.slice(0, (-1 * this.latestNote.length))
+		this.latestNote = ''
+	}
+
 }
 
 
 
-// class FileLoader {
-// 	private filePath :string
-// 	constructor(props :string) {
-// 		this.filePath = path.normalize(props)
-// 		console.dir(this.showPath)
-// 	}
-// 	get showPath() {
-// 		return this.filePath
-// 	}
-// 	getFileData() {
-// 		fs.readFile(this.filePath,'utf8',(e,data)=>{
-// 			if(e) {
-// 				throw e
-// 			}
-// 			return data
-// 		})
-// 	}
-// }
-
-
-
-class Application {
+class Emmy {
 	private videoPath   :string
 	private subtlPath   :string
 	private videoElem   :string = 'Video'
 	private consoleElem :string = 'Textarea'
-	public video    :VideoController
-	public console :Console
+	public video   :VideoController
+	public console :Consoles
 
 	constructor(_arg:any) {
 		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
-		this.console = new Console({path:this.subtlPath, el:this.consoleElem})
-		this.console.resize()
+		this.console = new Consoles({path:this.subtlPath, el:this.consoleElem})
 		document.addEventListener('keydown', e=>this.keyEvents(e))
 		window.addEventListener('resize', _=>this.console.resize())
 		document.getElementById('Write')!.addEventListener('click',_=>this.writeFile())
 		document.getElementById('WriteReload')!.addEventListener('click',_=>this.writeFile(true))
+		this.console.resize()
+
+		this.setIPC()
 	}
+
 	private keyEvents(e:KeyboardEvent) {
 		if(/(textarea|input)/i.test(e.srcElement!.tagName)) return
 		switch (e.key.toLowerCase()) {
-			case 'z':
+			case 'v':
 			case 'arrowleft':
 				this.video.seek(-10)
 				break
-			case 'x':
+			case 'n':
 			case 'arrowright':
 				this.video.seek(10)
 				break
-			case 'a':
-				this.video.seek(-60)
+			case 'c':
+				if(e.shiftKey) {
+					this.video.seek(-600)
+				} else {
+					this.video.seek(-60)
+				}
 				break
-			case 's':
-				this.video.seek(60)
+			case 'm':
+				if(e.shiftKey) {
+					this.video.seek(600)
+				} else {
+					this.video.seek(60)
+				}
 				break
 			case ' ':
 				this.video.pp()
+				break
+			case 'b':
+				if(e.shiftKey) {
+					this.video.seek_f(-1)
+				} else {
+					this.video.seek_f(1)
+				}
 				break
 			case 'i':
 				this.console.putBegin()
 				break
 			case 'o':
+				this.console.putDiv()
+				break
+			case 'p':
 				this.console.putEnd()
 				break
 			case 'c':
 				this.console.wtiin()
 				break
+			case 's':
+				if(e.ctrlKey) this.writeFile()
+				break
+			case '\\':
+				this.console.deleteLatestNote()
+				break
 		}
 	}
+
 	private writeFile(flag=false) {
 		let data = (document.getElementById('Textarea')! as HTMLTextAreaElement).value
-		fs.writeFile(filePath, data, (err:any)=>{
+		fs.writeFile(subtitlePath, data, (err:any)=>{
 			if(err) throw err
 			if(flag) window.location.reload()
 		})
+	}
+
+
+
+	private MergeTXTintoVTT(args:any) {
+		const marge = new MargeViT()
+		marge.exe(args)
+	}
+
+
+
+	private setIPC() {
+		ipcRenderer.on('Open-subtitle-file', (_:Event, res:string)=>{
+			console.log(res)
+		})
+		ipcRenderer.on('Verify-for-Now-used-file', ()=>{
+			console.log(subtitlePath)
+			// let vttParser = new VttParser()
+			// vttParser.test(subtitlePath)
+		})
+		ipcRenderer.on('Verify-for-Open-file', (_:Event, res:string)=>{
+			console.log(res)
+		})
+		ipcRenderer.on('Merge-text-into-Vtt', (_:Event, _res:any)=>{
+			this.MergeTXTintoVTT({
+				txtPath: path.resolve(path.join(__dirname, '../data/noteTest.txt')),
+				vttPath: path.resolve(path.join(__dirname, '../data/subtitleTest.vtt'))
+			})
+		})
+
+
 	}
 }
 
@@ -183,8 +243,8 @@ class Application {
 /**
  * Run
  */
-let Init = ()=>{
-	app = new Application({})
+const Init = ()=>{
+	emmy = new Emmy({})
 }
 if(document.readyState!=='loading'){
 	Init()

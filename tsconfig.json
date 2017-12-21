@@ -1,38 +1,32 @@
 {
-    "compilerOptions": {
-        "allowJs": true,
-        "alwaysStrict": true,
-        "experimentalDecorators": true,
-        "forceConsistentCasingInFileNames": true,
-        "jsx": "react",
-        "lib": [
-            "dom",
-            "es2017",
-            "scripthost"
-        ],
-        "listEmittedFiles": true,
-        "listFiles": false,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "newLine": "lf",
-        "noEmitOnError": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "preserveConstEnums": true,
-        "pretty": true,
-        "removeComments": true,
-        "strictNullChecks": true,
-        "sourceMap": false,
-        "target": "es6"
-    },
-    "include": [
-        "app.ts",
-        "**/page.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+	"compilerOptions": {
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "React",
+		"lib": [
+			"DOM",
+			"ES2017",
+			"ScriptHost"
+		],
+		"listEmittedFiles": true,
+		"listFiles": false,
+		"module": "commonjs",
+		"moduleResolution": "Node",
+		"newLine": "lf",
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"preserveConstEnums": true,
+		"pretty": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"strict": true,
+		"target": "ES2017"
+	},
+	"files": ["src/renderer/index.ts"],
+	"exclude": ["node_modules"]
 }

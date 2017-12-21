@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig",
+		"jsx": "Preserve",
+		"module": "ES5",
+		"moduleResolution": "Node",
+		"slipLibCheck": true,
+		"target": "ES5"
+	},
+	"files": ["src/main/app.ts"]
+}
