@@ -133,8 +133,13 @@ class Verifications {
 }
 
 class Log {
+	static Exp = function(head: string, str: string) {
+		this.name = head
+		this.message = str
+	}
 	static notUTF8 = () => {
 		console.error('ERR: Character code must UTF-8 ( with or without a BOM ).')
+		throw new Log.Exp('Err', 'Character code must UTF-8 ( with or without a BOM )')
 	}
 	static notExistSignature = () => {
 		console.error('ERR: Not existing "WEBVTT" at top of file.')

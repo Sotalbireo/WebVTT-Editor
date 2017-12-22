@@ -30,10 +30,8 @@ export default class MargeViT {
 		// cue数かぞえる
 		this.cuesLen = this.cues.length
 		// 文章行数と一致するか（足りなきゃきれるし多けりゃあふれる）
-		if(this.textLen !== this.cuesLen) {
-			console.error(`Not Equal Lengths: txt=>${this.textLen}, cue=>${this.cuesLen}.`)
-			return false
-		}
+		if(this.textLen !== this.cuesLen)
+			throw `Not Equal Lengths: txt=>${this.textLen}, cue=>${this.cuesLen}.`;
 		// cueの仮文章と文章を差し替え
 		for (let i =0; i < this.textLen; ++i) {
 			this.cues[i].placehold = this.text[i]

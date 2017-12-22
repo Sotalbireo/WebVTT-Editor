@@ -23,12 +23,13 @@
     "build": "npm-run-all build:*",
     "build:m": "webpack --config webpack.config.main.js --colors -p",
     "build:r": "webpack --config webpack.config.renderer.js --colors",
-    "build:m:w": "webpack --config webpack.config.main.js --colors --watch",
-    "build:r:w": "webpack --config webpack.config.renderer.js --colors --watch",
+    "watch": "npm-run-all --parallel watch:* watch:cp:*",
+    "watch:m": "webpack --config webpack.config.main.js --colors --watch",
+    "watch:r": "webpack --config webpack.config.renderer.js --colors --watch",
+    "watch:cp:html": "cpx src/index.html dist --watch",
     "postinstall": "npm run build"
   },
   "devDependencies": {
-    "@types/electron": "^1.6.10",
     "@types/node": "^8.0.58",
     "@types/react": "^16.0.29",
     "@types/react-dom": "^16.0.2",

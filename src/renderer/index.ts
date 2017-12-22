@@ -113,7 +113,7 @@ class Consoles {
 		(document.querySelector('#CheckNow input') as HTMLInputElement)!.value = emmy.video.formatTime(emmy.video.getCurrentTime(), true)
 	}
 	deleteLatestNote() {
-		if (this.latestNote.length === 0) return;
+		if (this.latestNote.length === 0) return
 		this.dom.value = this.dom.value.slice(0, (-1 * this.latestNote.length))
 		this.latestNote = ''
 	}
@@ -131,6 +131,7 @@ class Emmy {
 	public console :Consoles
 
 	constructor(_arg:any) {
+		window.addEventListener('error', (e:ErrorEvent)=>Emmy.popinAlert({head:e.type.charAt(0).toUpperCase() + e.type.slice(1), str:e.message}))
 		this.video = new VideoController({path:this.videoPath, el:this.videoElem})
 		this.console = new Consoles({path:this.subtlPath, el:this.consoleElem})
 		document.addEventListener('keydown', e=>this.keyEvents(e))
@@ -233,10 +234,25 @@ class Emmy {
 				vttPath: path.resolve(path.join(__dirname, '../data/subtitleTest.vtt'))
 			})
 		})
+	}
 
 
+
+	static popinAlert(attr?: {type?:string, head?:string, str?:any}) {
+		attr = attr || {}
+		attr.type = attr.type || 'danger'
+		attr.head = attr.head || 'Oops!'
+		attr.str  = attr.str  || 'General error.'
+		const alert=`
+<div class="alert alert-${attr.type}" role="alert">
+  <h4 class="alert-heading">${attr.head} <button type="button" class="close" data-dismiss="alert" aria-label="Close" onClick="javascript:this.parentNode.parentNode.outerHTML='';"><span aria-hidden="true">&times;</span></button></h4>
+  <p class="mb-0">${attr.str}</p>
+</div>`
+		document.getElementById('Body')!.insertAdjacentHTML('beforebegin', alert);
 	}
 }
+
+
 
 
 
