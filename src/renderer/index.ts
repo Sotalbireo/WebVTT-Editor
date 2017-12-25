@@ -1,10 +1,10 @@
+/// <reference path="../interface.d.ts" />
 import * as fs from 'fs'
 import * as path from 'path'
 import MargeViT from '../module/MargeTiV'
 const { ipcRenderer } = require('electron')
 // const remote = require('electron').remote
 const subtitlePath = path.resolve(path.join(__dirname, '../data/subtitle.vtt'))
-// const notePath = path.join(__dirname, 'note.txt')
 // import { VttParser } from './src/module/VttParser'
 
 let emmy :Emmy
@@ -230,15 +230,15 @@ class Emmy {
 		})
 		ipcRenderer.on('Merge-text-into-Vtt', (_:Event, _res:any)=>{
 			this.MergeTXTintoVTT({
-				txtPath: path.resolve(path.join(__dirname, '../data/noteTest.txt')),
-				vttPath: path.resolve(path.join(__dirname, '../data/subtitleTest.vtt'))
+				txtPath: path.resolve(path.join(__dirname, '../data/note.txt')),
+				vttPath: path.resolve(path.join(__dirname, '../data/subtitle.vtt'))
 			})
 		})
 	}
 
 
 
-	static popinAlert(attr?: {type?:string, head?:string, str?:any}) {
+	static popinAlert(attr?: PopinAlertCue) {
 		attr = attr || {}
 		attr.type = attr.type || 'danger'
 		attr.head = attr.head || 'Oops!'

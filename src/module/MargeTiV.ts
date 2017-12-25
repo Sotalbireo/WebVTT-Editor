@@ -1,10 +1,6 @@
+/// <reference path="../interface.d.ts" />
 import * as fs from 'fs'
 import * as path from 'path'
-
-interface Cue {
-	timestamp: string,
-	placehold: string,
-}
 
 export default class MargeViT {
 	private file: string
@@ -14,7 +10,7 @@ export default class MargeViT {
 	private cuesLen: number
 	private cueRE = /(?:^.*?$)?([\d: .]+-->.+)\n([\s\S]+?[^\n])$/img
 
-	exe(attr: {txtPath: string, vttPath: string}) {
+	preCheck(attr: {txtPath: string, vttPath: string}) {
 		// 文章ファイル読み込み（複数行の改行は無視）
 		this.file = fs.readFileSync(attr.txtPath, 'utf8')
 		this.file = this.file.replace(/\r\n?/g, "\n").replace(/\n{2,}/g, "\n").trim()
@@ -32,6 +28,11 @@ export default class MargeViT {
 		// 文章行数と一致するか（足りなきゃきれるし多けりゃあふれる）
 		if(this.textLen !== this.cuesLen)
 			throw `Not Equal Lengths: txt=>${this.textLen}, cue=>${this.cuesLen}.`;
+	}
+
+	exe(attr: {txtPath: string, vttPath: string}) {
+		this.preCheck({txtPath:attr.txtPath, vttPath:attr.vttPath})
+
 		// cueの仮文章と文章を差し替え
 		for (let i =0; i < this.textLen; ++i) {
 			this.cues[i].placehold = this.text[i]
