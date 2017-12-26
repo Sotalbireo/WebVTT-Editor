@@ -63,7 +63,7 @@ class VideoController {
 
 
 class Consoles {
-	private dom:　HTMLTextAreaElement
+	private dom: HTMLTextAreaElement
 	private latestNote = ''
 	private mikoto = 0
 
@@ -72,10 +72,10 @@ class Consoles {
 		return ('00000'+this.mikoto).substr(-6)
 	}
 
-	constructor(_arg:　{path:　string,　el:　string}) {
+	constructor(_arg: {path: string, el: string}) {
 		this.dom = document.getElementById('Textarea') as HTMLTextAreaElement
 		this.mikoto = Math.floor(Math.random()*100000)
-		fs.readFile(subtitlePath,　'utf8',　(e,　data:any)=>{
+		fs.readFile(subtitlePath, 'utf8', (e, data:any) => {
 			if(e) {
 				throw e
 			}else{
@@ -133,7 +133,7 @@ class Emmy {
 	private videoElem:   string = 'Video'
 	private consoleElem: string = 'Textarea'
 	public video:   VideoController
-	public console:　Consoles
+	public console: Consoles
 
 	constructor() {
 		window.addEventListener('error', (e:ErrorEvent)=>Ai.popinAlert({head:e.type.charAt(0).toUpperCase() + e.type.slice(1), str:e.message}))

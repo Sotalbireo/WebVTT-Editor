@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const ExternalsPlugin = webpack.ExternalsPlugin
 
 const webpackConfig = {
@@ -30,10 +31,10 @@ const webpackConfig = {
         new CheckerPlugin(),
         new webpack.LoaderOptionsPlugin({
             debug: true
-        // }),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        //     minChunks: Infinity
+        }),
+        new UglifyJSPlugin({
+            ecma: 8,
+            parallel: true
         })
     ],
     resolve: {
