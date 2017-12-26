@@ -1,6 +1,6 @@
 /// <reference path="../interface.d.ts" />
 import * as fs from 'fs'
-import * as path from 'path'
+import Ai from '../module/Ai'
 
 export default class MargeViT {
 	private file: string
@@ -10,8 +10,8 @@ export default class MargeViT {
 	private cuesLen: number
 	private cueRE = /(?:^.*?$)?([\d: .]+-->.+)\n([\s\S]+?[^\n])$/img
 
-	preCheck(attr: {txtPath: string, vttPath: string}) {
-		// 文章ファイル読み込み（複数行の改行は無視）
+	preCheck(attr: MargeTiV_attr) {
+		// 原稿ファイル読み込み（複数行の改行は無視）
 		this.file = fs.readFileSync(attr.txtPath, 'utf8')
 		this.file = this.file.replace(/\r\n?/g, "\n").replace(/\n{2,}/g, "\n").trim()
 		// 行ごとに区切る
@@ -25,22 +25,35 @@ export default class MargeViT {
 		this.cues = this.cueParse(this.file)
 		// cue数かぞえる
 		this.cuesLen = this.cues.length
-		// 文章行数と一致するか（足りなきゃきれるし多けりゃあふれる）
+		// 原稿行数と一致するか（足りなきゃきれるし多けりゃあふれる）
 		if(this.textLen !== this.cuesLen)
 			throw `Not Equal Lengths: txt=>${this.textLen}, cue=>${this.cuesLen}.`;
 	}
 
-	exe(attr: {txtPath: string, vttPath: string}) {
+	exe(attr: MargeTiV_attr) {
 		this.preCheck({txtPath:attr.txtPath, vttPath:attr.vttPath})
 
-		// cueの仮文章と文章を差し替え
+		// cueの仮文章と原稿の文章を差し替え
 		for (let i =0; i < this.textLen; ++i) {
 			this.cues[i].placehold = this.text[i]
 		}
-		// Cue.timestampを目標にCue.placehold相当をCue.newTextで置換
+		// Cue.timestampを目標にCue.placeholdを置換
 		this.file = this.cueReplace()
-		// ファイルに書き戻し：[TODO]いずれここも変数に。というか元ファイルに書き戻してよさそう。
-		fs.writeFileSync(path.resolve(path.join(__dirname, '../data/subtitle_with_note.vtt')), this.file, 'utf8')
+		// ファイルに書戻し
+		// [INFO] 書戻し先VTTを別途指定されていなければ、元VTTに書く
+		attr.outPath = attr.outPath || attr.vttPath
+		fs.writeFile(attr.outPath, this.file, 'utf8', err=>{
+			if(err) {
+				throw err
+			} else {
+				Ai.popinAlert({
+					type: 'info',
+					head: 'Sucseed:',
+					str: `writeFile(); path=>"${attr.outPath}"`
+				})
+			}
+		})
+
 		return true
 	}
 
