@@ -17,7 +17,7 @@
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
   "main": "dist/app.js",
   "scripts": {
-    "start": "npm-run-all cp:html build:* electron",
+    "start": "npm-run-all --parallel cp:html build:* --sequential electron",
     "electron": "npx electron .",
     "cp:html": "cpx src/index.html dist",
     "build": "npm-run-all build:*",
