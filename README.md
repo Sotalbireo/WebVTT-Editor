@@ -1,10 +1,12 @@
-# WEBVTT-Editor
+# WebVTT-Editor
 
 日本語りどみ
 
+**注意：開発版につき、見た目だけのハリボテ要素など多々ある**
+
 ## これなん
 
-HTML5の<VIDEO />で使える字幕ファイル規格「vtt」のタイムスタンプを、動画見ながらしこしこ打てるやつ。
+HTML5の`<TRACK />`で使える字幕ファイル規格「vtt」のタイムスタンプを、動画見ながらしこしこ打てるやつ。
 機能は増える予定。
 
 ## インストール方法
@@ -27,7 +29,7 @@ git clone https://github.com/Sotalbireo/WebVTT-Editor.git　&& npm i
 
 key | action
 :---:|---
-Shift-c　| 動画を10分戻す
+Shift-c | 動画を10分戻す
 c | 動画を1分戻す
 v, ← | 動画を10秒戻す
 b | コマ送り
