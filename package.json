@@ -1,6 +1,6 @@
 {
-  "name": "WebVTT-Editor",
-  "version": "0.1.0",
+  "name": "webpack-editor",
+  "version": "0.2.0",
   "description": "The editor to create WebVTT how subtitles at html5 video.",
   "keywords": [
     "html5",
@@ -8,7 +8,7 @@
     "subtitles",
     "electron"
   ],
-  "author": "Sota SASAKI",
+  "author": "Kyohei SASAKI",
   "license": "MIT",
   "repository": {
     "type": "git",
