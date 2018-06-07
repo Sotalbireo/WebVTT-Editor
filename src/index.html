@@ -4,8 +4,12 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 	<title>WebVTT Editor (beta)</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<style type="text/css">
+		@font-face {
+			font-family: "NotoTube";
+			src: url("noto.otf") format('opentype');
+		}
 		div.alert{z-index:100000;position:absolute;top:0;width:100%}
 		div.alert button{line-height:inherit;}
 		.form-control[readonly] {background-color:inherit}
@@ -17,7 +21,8 @@
 		.lh-1{line-height:1!important}
 		.h-100{height:100%!important}
 		.fullWH{height:100vh;width:100vw;margin:0!important;}
-		/* video.vimeo::cue{font-weight:bold} */
+		video.vimeo ::cue{font-weight:bold}
+		video.youtube ::cue{font-family:""}
 	</style>
 	<script src="index.js"></script>
 </head>
@@ -31,7 +36,7 @@
 	<tbody>
 		<tr>
 			<td id="VideoPreviewer">
-				<video id="Video" controls preload="auto" width="100%" height="auto" crossorigin="anonymous" class="vimeo">
+				<video id="Video" controls preload="auto" width="100%" height="auto" crossorigin="anonymous" class="">
 				<source src="../data/video.mp4" type="video/mp4">
 				<track label="Japanese" kind="subtitles" src="../data/subtitle.vtt" srclang="ja" default></track>
 				</video>

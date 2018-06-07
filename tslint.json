@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "array-type": [true, "array"],
+    "arrow-parents": false,
+    "import-name": false,
+    "indent": [true, "tabs", 2],
+    "newline-before-return": true,
+    "no-duplicate-imports": true,
+    "no-duplicate-switch-case": true,
+    "no-duplicate-variable": true,
+    "no-invalid-template-strings": true,
+    "no-invalid-this": true,
+    "no-irregular-whitespace": true,
+    "no-parameter-reassignment": true,
+    "no-this-assignment": true,
+    "no-unnecessary-callback-wrapper": true,
+    "no-use-before-declare": true,
+    "number-literal-format": true,
+    "object-literal-key-quotes": [true, "consistent-as-needed"],
+    "ordered-imports": true,
+    "quotemark": [true, "single", "jsx-double"],
+    "strict-boolean-expressions": true,
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "triple-equals": [true, "allow-null-check"]
+  }
+}

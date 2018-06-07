@@ -1,12 +1,9 @@
 // const electron = require('electron')
-import * as electron from 'electron'
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
-const dialog = electron.dialog
+import {app, BrowserWindow, dialog, Menu} from 'electron'
 // const ipcMain = electron.ipcMain
 
 
-const menu = electron.Menu.buildFromTemplate([
+const menu = Menu.buildFromTemplate([
 	{
 		label: 'Edit/View',
 		submenu: [
