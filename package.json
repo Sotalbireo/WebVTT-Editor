@@ -27,7 +27,8 @@
     "watch:m": "webpack --config webpack.config.main.js --colors --watch",
     "watch:r": "webpack --config webpack.config.renderer.js --colors --watch",
     "watch:cp:html": "cpx src/index.html dist --watch",
-    "postinstall": "npm run build"
+    "-postinstall": "npm-run-all --parallel postinstall:*",
+    "postinstall:": ""
   },
   "devDependencies": {
     "@types/node": "^8.10.18",
