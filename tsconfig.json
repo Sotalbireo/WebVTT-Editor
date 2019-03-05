@@ -1,32 +1,34 @@
 {
-	"compilerOptions": {
-		"allowJs": true,
-		"allowSyntheticDefaultImports": true,
-		"experimentalDecorators": true,
-		"forceConsistentCasingInFileNames": true,
-		"jsx": "React",
-		"lib": [
-			"DOM",
-			"ES2017",
-			"ScriptHost"
-		],
-		"listEmittedFiles": true,
-		"listFiles": false,
-		"module": "commonjs",
-		"moduleResolution": "Node",
-		"newLine": "lf",
-		"noEmitOnError": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitReturns": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"preserveConstEnums": true,
-		"pretty": true,
-		"removeComments": true,
-		"sourceMap": false,
-		"strict": true,
-		"target": "ES2017"
-	},
-	"files": ["src/renderer/index.ts"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
