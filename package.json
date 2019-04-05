@@ -91,7 +91,9 @@
     "cross-env": "^5.2.0",
     "electron": "^4.0.6",
     "env-cmd": "^8.0.2",
+    "file-type": "^10.9.0",
     "jschardet": "^2.1.0",
+    "read-chunk": "^3.1.0",
     "semantic-ui-sass": "^2.3.1",
     "vue": "^2.6.7"
   }

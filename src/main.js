@@ -1,4 +1,6 @@
+/* eslint-disable */
 const { app, BrowserWindow } = require("electron");
+/* eslint-enable */
 //@ts-check
 
 // Keep a global reference of the window object, if you don't, the window will

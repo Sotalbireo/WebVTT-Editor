@@ -93,7 +93,6 @@ export class Parser {
 
 const parser = new Parser("src/assets/sample.en.vtt")
 parser.setCues()
-console.dir(parser.cues)
 
 export default Vue.extend({
     data: () => ({

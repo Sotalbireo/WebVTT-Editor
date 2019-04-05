@@ -28,6 +28,11 @@
 
 <script lang="ts">
 import Vue from "vue";
+import readChunk from "read-chunk"
+import fileType from "file-type"
+import {resolve} from "path"
+
+const mimetype = (fileType(readChunk.sync(resolve("src/assets/sample.mp4"), 0, fileType.minimumBytes)) || {mime:"video"}).mime
 
 interface Subtitle {
     label: string;
@@ -39,7 +44,7 @@ export default Vue.extend({
     data: () => ({
         platform: "test",
         videoSrc: "assets/sample.mp4",
-        videoMime: "video/mp4",
+        videoMime: mimetype,
         subtitles: [
             {
                 label: "en",
