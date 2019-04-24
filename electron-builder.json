@@ -1,0 +1,19 @@
+{
+	"appId": "jp.siky.webvtt-editor",
+	"files": [
+		{
+			"from": "dist",
+			"to": "dist",
+			"filter": [
+				"main/**/*",
+				"renderer/**/*"
+			]
+		},
+		{
+			"from": ".",
+			"filter": [
+				"package.json"
+			]
+		}
+	]
+}

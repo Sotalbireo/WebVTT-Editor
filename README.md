@@ -6,16 +6,34 @@
 
 ## これなん
 
-HTML5.x の`<TRACK />`で使える字幕ファイル規格[「vtt」](https://www.w3.org/TR/webvtt1/)のタイムスタンプを、実際の動画を見ながらしこしこ打てるやつ。
-機能は増える予定<ins>だったが暫く開発停止してたら環境ボロくなったしナウくイケイケにするかー！つったら環境構築で予定工数の9割を使い果たしてガワ作っただけで工数終わったため機能が無になった2019。マジ勘弁</ins>。
+HTML5.x の`<TRACK />`で使える字幕ファイル規格「vtt」のタイムスタンプを、動画見ながらしこしこ打てるやつ。
+機能は増える予定。
+いわゆる Electron アプリなのでそれなりに重い。
 
 ## インストール方法
 
-レポジトリをクローンして`yarn install && yarn start`すれば動くはず。npmで動くかは知らない…。
+### とりあえず使いたい人
+
+```bash
+cd ~ && git clone https://github.com/Sotalbireo/WebVTT-Editor.git　&& yarn
+```
+
+### こだわりのある人
+
+任意のフォルダに`git clone`して`yarn`なりで依存パッケージを揃えてください
 
 ## つかいかた
 
-今のところ動く機能はない！これは忠告だ…
+### ビルドする
+
+1. インストール (`git clone`) したレポジトリフォルダで `yarn build`
+1. `./dist` フォルダの中にある実行ファイルを起動
+
+### ビルドしない
+
+1. インストール (`git clone`) したレポジトリフォルダで `yarn devel`
+
+以下機能はまだなんもない
 
 ### キーボードショートカット
 
@@ -41,3 +59,7 @@ Ctrl-s | 字幕ファイルを上書き保存する（現在は`data/subtitle.vt
 * macOS mojave (10.14.3)
 * Node 10.15.1 (LTS)
 * yarn 1.13.0
+
+## 参考
+
+* [WebVTT: The Web Video Text Tracks Format](https://w3c.github.io/webvtt/)

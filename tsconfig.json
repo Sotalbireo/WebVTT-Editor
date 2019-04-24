@@ -1,34 +1,37 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"importHelpers": true,
+		"moduleResolution": "node",
+		"lib": [
+			"esnext",
+			"esnext.asynciterable",
+			"dom"
+		],
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"sourceMap": true,
+		"strict": true,
+		"noImplicitAny": false,
+		"noEmit": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": [
+				"./src/renderer/*"
+			],
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"typeRoots": [
+			"./node_modules/@types",
+			"./node_modules/@nuxt/vue-app/types"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	]
 }
