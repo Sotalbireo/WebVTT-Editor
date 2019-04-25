@@ -27,7 +27,7 @@ import { Action } from 'vuex-class'
 export default class FileGetter extends Vue {
   @Prop({ type: String, default: 'ここにファイルをドロップ' }) readonly placeholder!: string
   @Prop({ type: String, default: 'file' }) readonly iconType!: string
-  @Action('setPath') actSetPath
+  @Action setResource
 
   handleDragOver = (e) => {
     e.stopPropagation()
@@ -48,7 +48,7 @@ export default class FileGetter extends Vue {
       alert('現在、字幕ファイルの同時読込は1件のみです')
       return
     }
-    this.actSetPath(files)
+    this.setResource(files)
   }
   handleFileSelect = (e) => {
     e.stopPropagation()
@@ -64,7 +64,7 @@ export default class FileGetter extends Vue {
       alert('現在、字幕ファイルの同時読込は1件のみです')
       return
     }
-    this.actSetPath(files)
+    this.setResource(files)
   }
 }
 </script>

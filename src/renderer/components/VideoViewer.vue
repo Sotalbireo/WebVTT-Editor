@@ -27,14 +27,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, namespace } from 'vuex-class'
+
+const nsSubtitle = namespace('subtitle')
 
 @Component
 export default class VideoContainer extends Vue {
   @Getter videoPath
   @Getter videoType
-  @Getter hasSubtitles
-  @Getter subtitles
+  @nsSubtitle.Getter hasSubtitles
+  @nsSubtitle.Getter subtitles
   platform = 'test'
 }
 </script>

@@ -27,10 +27,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, namespace } from 'vuex-class'
 import VideoViewer from '~/components/VideoViewer.vue'
 import RawEditor from '~/components/subtitles/RawEditor.vue'
 import FileGetter from '~/components/FileGetter.vue'
+
+const nsSubtitle = namespace('subtitle')
 
 @Component({
   components: {
@@ -41,7 +43,7 @@ import FileGetter from '~/components/FileGetter.vue'
 })
 export default class MainContainer extends Vue {
   @Getter hasVideoPath
-  @Getter hasSubtitles
+  @nsSubtitle.Getter hasSubtitles
 }
 </script>
 
