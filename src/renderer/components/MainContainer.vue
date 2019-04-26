@@ -1,7 +1,7 @@
 <template>
   <div class="ui centered grid">
     <div id="UpperContent" class="row">
-      <template v-if="this.hasVideoPath">
+      <template v-if="hasVideoPath">
         <VideoViewer />
       </template>
       <template v-else>
@@ -12,7 +12,7 @@
       </template>
     </div>
     <div id="LowerContent" class="row">
-      <template v-if="this.hasSubtitles">
+      <template v-if="hasSubtitles">
         <RawEditor />
       </template>
       <template v-else>

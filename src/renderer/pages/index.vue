@@ -1,7 +1,8 @@
 <template>
   <div id="Body" class="ui grid">
     <SideNavigation
-      class="two wide column"
+      id="SideNavigation"
+      class="one wide column"
     />
     <MainContainer
       class="thirteen wide column"
@@ -33,4 +34,6 @@ ul.ui.list li:before
     content: ""
 #Body
   height: 100vh
+#SideNavigation
+  padding-right: 0
 </style>

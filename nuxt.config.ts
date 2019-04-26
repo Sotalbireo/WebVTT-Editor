@@ -1,3 +1,4 @@
+/* eslint no-unused-vars:0 */
 import NuxtConfiguration from '@nuxt/config'
 
 const nuxtConfig: NuxtConfiguration = {

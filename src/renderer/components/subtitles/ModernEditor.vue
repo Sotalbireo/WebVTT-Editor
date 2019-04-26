@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import fs from 'fs'
 import jschardet from 'jschardet'
 import Log from '~/middleware/Log'
@@ -95,7 +95,8 @@ const parser = new Parser('/sample.en.vtt')
 parser.setCues()
 // console.dir(parser.cues)
 
-export default class SubtitleEditor extends Vue {
+@Component
+export default class ModernEditor extends Vue {
   // cues: parser.cues
 }
 </script>
