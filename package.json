@@ -1,6 +1,6 @@
 {
   "name": "webvtt-editor",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "sasaky <athene609.cyl@gmail.com>",
   "description": "The editor to create WebVTT how subtitles at html5 video.",
   "keywords": [
@@ -17,18 +17,20 @@
   },
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
   "main": "dist/main",
+  "engines": {
+    "node": "^10.15.3"
+  },
   "scripts": {
     "nuxt:generate": "nuxt generate .",
     "nuxt:dev": "nuxt dev .",
     "tsc:build": "tsc --build tsconfig.main.json",
     "tsc:watch": "tsc --build tsconfig.main.json --watch",
     "build:dist": "yarn nuxt:generate && yarn tsc:build",
-    "build:pack": "electron-builder",
+    "build:pack": "electron-builder -mw",
     "build": "yarn build:dist && yarn build:pack",
     "dev": "yarn tsc:build && concurrently -k -n tsc,main,renderer -c cyan,cyan,green \"yarn tsc:watch\" \"cross-env NODE_ENV=development electron .\" \"yarn nuxt:dev\"",
-    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
-    "precommit": "yarn lint",
-    "post-update": "yarn upgrade --latest"
+    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore --ignore-path .eslintignore .",
+    "precommit": "yarn lint"
   },
   "dependencies": {
     "@nuxt/typescript": "^2.6.1",
@@ -48,7 +50,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
     "@types/mousetrap": "^1.6.2",
-    "@types/node": "^11.13.0",
+    "@types/node": "^12.0.2",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "blob-util": "^2.0.2",
     "concurrently": "^4.1.0",
@@ -60,11 +62,11 @@
     "eslint-loader": "^2.1.2",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.4.1",
-    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-node": "^9.0.1",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^5.2.2",
-    "fibers": "^3.1.1",
+    "fibers": "^4.0.1",
     "mousetrap": "^1.6.3",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",

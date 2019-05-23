@@ -27,6 +27,7 @@
 			]
 		},
 		"typeRoots": [
+      "./src/renderer/@types",
 			"./node_modules/@types",
 			"./node_modules/@nuxt/vue-app/types"
 		]

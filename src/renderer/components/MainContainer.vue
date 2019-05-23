@@ -2,7 +2,9 @@
   <div class="ui centered grid">
     <div id="UpperContent" class="row">
       <template v-if="hasVideoPath">
-        <VideoViewer />
+        <VideoViewer
+          ref="video"
+        />
       </template>
       <template v-else>
         <FileGetter
@@ -13,7 +15,10 @@
     </div>
     <div id="LowerContent" class="row">
       <template v-if="hasSubtitles">
-        <RawEditor />
+        <RawEditor
+          ref="editor"
+          @get-videos-currentpos="getVideosCurrentPos"
+        />
       </template>
       <template v-else>
         <FileGetter
@@ -44,6 +49,12 @@ const nsSubtitle = namespace('subtitle')
 export default class MainContainer extends Vue {
   @Getter hasVideoPath
   @nsSubtitle.Getter hasSubtitles
+
+  videoCurrentTime = 0
+
+  getVideosCurrentPos() {
+    (this.$refs.editor as RawEditor).videosCurrentPos = (this.$refs.video as VideoViewer).readableCurrentTime()
+  }
 }
 </script>
 

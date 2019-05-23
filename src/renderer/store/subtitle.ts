@@ -21,6 +21,8 @@ export const getters = {
 export const actions = {
   save: async (context, payload) => {
     await context.commit('writeFile', payload)
+  },
+  update: (context) => {
     context.commit('updateResource', context.state.selectedIdx)
   }
 }

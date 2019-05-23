@@ -24,9 +24,7 @@ const nuxtConfig: NuxtConfiguration = {
 
   build: {
     extend(config, { isClient, isDev }) {
-      if (isClient) {
-        config.target = 'electron-renderer'
-      }
+      config.target = 'electron-renderer'
       if (isDev && isClient) {
         config.module!.rules.push({
           enforce: 'pre',

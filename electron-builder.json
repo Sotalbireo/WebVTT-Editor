@@ -1,5 +1,5 @@
 {
-	"appId": "jp.siky.webvtt-editor",
+  "appId": "jp.siky.webvtt-editor",
 	"files": [
 		{
 			"from": "dist",
@@ -15,5 +15,11 @@
 				"package.json"
 			]
 		}
-	]
+  ],
+  "mac": {
+    "target": "dmg"
+  },
+  "win": {
+    "target": "portable"
+  }
 }

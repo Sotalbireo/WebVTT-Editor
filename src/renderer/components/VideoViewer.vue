@@ -64,8 +64,19 @@ export default class VideoViewer extends Vue {
   /**
    * Gets the current playback position, in seconds.
    */
-  get currentTime() : number {
-    return this.videoElement!.currentTime
+  currentTime = () => this.videoElement!.currentTime
+
+  /**
+   * Gets the current playback position, in human readable format.
+   * (HH:MM:SS.sss)
+   */
+  readableCurrentTime = () => {
+    const t = this.videoElement!.currentTime
+    const h = ('0' + Math.floor(t / 3600) % 60).slice(-2)
+    const m = ('0' + Math.floor(t / 60) % 60).slice(-2)
+    const s = ('0' + Math.floor(t) % 60).slice(-2)
+    const sss = ('00' + Math.floor(t % 10 * 1000)).slice(-3)
+    return `${h}:${m}:${s}.${sss}`
   }
 
   /**
