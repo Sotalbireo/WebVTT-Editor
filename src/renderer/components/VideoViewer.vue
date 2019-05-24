@@ -46,14 +46,14 @@ export default class VideoViewer extends Vue {
   videoBind = (e) => {
     this.videoElement = e.target as HTMLVideoElement
     Mousetrap.bind('space', () => this.pp())
-    Mousetrap.bind('shift+z', () => this.seek(-3600))
+    Mousetrap.bind('shift+z', () => this.seek(-600))
     Mousetrap.bind('z', () => this.seek(-60))
     Mousetrap.bind('x', () => this.seek(-10))
     Mousetrap.bind('left', () => this.seekByFrame(-1))
     Mousetrap.bind('right', () => this.seekByFrame(1))
     Mousetrap.bind('c', () => this.seek(10))
     Mousetrap.bind('v', () => this.seek(60))
-    Mousetrap.bind('shift+v', () => this.seek(3600))
+    Mousetrap.bind('shift+v', () => this.seek(600))
   }
 
   /**

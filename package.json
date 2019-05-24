@@ -1,6 +1,6 @@
 {
   "name": "webvtt-editor",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "sasaky <athene609.cyl@gmail.com>",
   "description": "The editor to create WebVTT how subtitles at html5 video.",
   "keywords": [
