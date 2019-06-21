@@ -1,7 +1,5 @@
 <template>
-  <section
-    class="ui center aligned container"
-  >
+  <section class="ui center aligned container">
     <video
       id="Video"
       controls
@@ -35,13 +33,13 @@ const nsSubtitle = namespace('subtitle')
 
 @Component
 export default class VideoViewer extends Vue {
-  @Getter videoPath
-  @Getter videoType
-  @nsSubtitle.Getter hasSubtitles
-  @nsSubtitle.Getter subtitles
-  platform = 'test'
+  @Getter videoPath;
+  @Getter videoType;
+  @nsSubtitle.Getter hasSubtitles;
+  @nsSubtitle.Getter subtitles;
+  platform = 'test';
 
-  videoElement?: HTMLVideoElement
+  videoElement?: HTMLVideoElement;
 
   videoBind = (e) => {
     this.videoElement = e.target as HTMLVideoElement
@@ -49,22 +47,24 @@ export default class VideoViewer extends Vue {
     Mousetrap.bind('shift+z', () => this.seek(-600))
     Mousetrap.bind('z', () => this.seek(-60))
     Mousetrap.bind('x', () => this.seek(-10))
-    Mousetrap.bind('left', () => this.seekByFrame(-1))
-    Mousetrap.bind('right', () => this.seekByFrame(1))
+    Mousetrap.bind('left', () => this.seek(-1))
+    Mousetrap.bind('shift+left', () => this.seekByFrame(-1))
+    Mousetrap.bind('shift+right', () => this.seekByFrame(1))
+    Mousetrap.bind('right', () => this.seek(1))
     Mousetrap.bind('c', () => this.seek(10))
     Mousetrap.bind('v', () => this.seek(60))
     Mousetrap.bind('shift+v', () => this.seek(600))
-  }
+  };
 
   /**
    * Second Per Frame (means: 1 / fps)
    */
-  private spf = 1 / 60
+  private spf = 1 / 60;
 
   /**
    * Gets the current playback position, in seconds.
    */
-  currentTime = () => this.videoElement!.currentTime
+  currentTime = () => this.videoElement!.currentTime;
 
   /**
    * Gets the current playback position, in human readable format.
@@ -72,12 +72,12 @@ export default class VideoViewer extends Vue {
    */
   readableCurrentTime = () => {
     const t = this.videoElement!.currentTime
-    const h = ('0' + Math.floor(t / 3600) % 60).slice(-2)
-    const m = ('0' + Math.floor(t / 60) % 60).slice(-2)
-    const s = ('0' + Math.floor(t) % 60).slice(-2)
-    const sss = ('00' + Math.floor(t % 10 * 1000)).slice(-3)
+    const h = ('0' + (Math.floor(t / 3600) % 60)).slice(-2)
+    const m = ('0' + (Math.floor(t / 60) % 60)).slice(-2)
+    const s = ('0' + (Math.floor(t) % 60)).slice(-2)
+    const sss = ('00' + Math.floor((t % 10) * 1000)).slice(-3)
     return `${h}:${m}:${s}.${sss}`
-  }
+  };
 
   /**
    * Play/Pause
@@ -88,7 +88,7 @@ export default class VideoViewer extends Vue {
     } else {
       this.videoElement!.pause()
     }
-  }
+  };
 
   /**
    * Video seeking
@@ -96,7 +96,7 @@ export default class VideoViewer extends Vue {
    */
   seek = (second: number) => {
     this.videoElement!.currentTime += second
-  }
+  };
 
   /**
    * Video seeking (unit: frame)
@@ -104,7 +104,7 @@ export default class VideoViewer extends Vue {
    */
   seekByFrame = (frame: number) => {
     this.videoElement!.currentTime += frame * this.spf
-  }
+  };
 }
 </script>
 
@@ -112,6 +112,10 @@ export default class VideoViewer extends Vue {
 video
     max-height: 100%
 .vimeo
-    font-family: "Helvetica Neue",Helvetica,Arial!important
+    font-family: "Helvetica Neue", Helvetica, Arial !important
 .youtube
+    &.proportional-sans-serif
+      font-family: "YouTube Noto", Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif
+    &.proportional-serif
+      font-family: "Times New Roman", Times, Georgia, Cambria, "PT Serif Caption", serif
 </style>

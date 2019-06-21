@@ -1,21 +1,20 @@
 <template>
-  <div
-    class="ui center aligned placeholder segment"
-    @dragover="handleDragOver"
-    @drop="handleFileDrop"
-  >
-    <div class="ui icon header">
-      <i class="outline icon" :class="iconType" />
-      {{ placeholder }}
+  <div class="ui raised segment">
+    <div
+      class="ui center aligned attached segment"
+      @dragover="handleDragOver"
+      @drop="handleFileDrop"
+    >
+      <div class="ui icon header">
+        <i class="outline icon" :class="iconType" />
+        {{ placeholder }}
+      </div>
     </div>
-    <p>または以下からファイルを選択</p>
-    <div class="ui fluid icon input">
-      <input
-        type="file"
-        @change="handleFileSelect"
-      >
+    <label class="ui bottom attached labeled icon olive button">
       <i class="file outline icon" />
-    </div>
+      ファイルを選択
+      <input type="file" @change="handleFileSelect">
+    </label>
   </div>
 </template>
 
@@ -25,21 +24,24 @@ import { Action } from 'vuex-class'
 
 @Component
 export default class FileGetter extends Vue {
-  @Prop({ type: String, default: 'ここにファイルをドロップ' }) readonly placeholder!: string
-  @Prop({ type: String, default: 'file' }) readonly iconType!: string
-  @Action setResource
+  @Prop({ type: String, default: 'ファイルをドロップ' })
+  readonly placeholder!: string;
+  @Prop({ type: String, default: 'file' }) readonly iconType!: string;
+  @Action setResource;
 
   handleDragOver = (e) => {
     e.stopPropagation()
     e.preventDefault()
     e.dataTransfer.dropEffect = 'copy' // Explicitly show this is a copy.
-  }
+  };
   handleFileDrop = (e) => {
     e.stopPropagation()
     e.preventDefault()
 
     const files = <FileList>e.dataTransfer.files
-    const includeVideoFile = Array.from(files).some(f => /^video\//i.test(f.type))
+    const includeVideoFile = Array.from(files).some(f =>
+      /^video\//i.test(f.type)
+    )
 
     if (includeVideoFile && files.length > 1) {
       alert('動画ファイルは1つだけドロップしてください')
@@ -49,13 +51,15 @@ export default class FileGetter extends Vue {
       return
     }
     this.setResource(files)
-  }
+  };
   handleFileSelect = (e) => {
     e.stopPropagation()
     e.preventDefault()
 
     const files = <FileList>e.target.files
-    const includeVideoFile = Array.from(files).some(f => /^video\//i.test(f.type))
+    const includeVideoFile = Array.from(files).some(f =>
+      /^video\//i.test(f.type)
+    )
 
     if (includeVideoFile && files.length > 1) {
       alert('動画ファイルは1つだけ選択してください')
@@ -65,11 +69,13 @@ export default class FileGetter extends Vue {
       return
     }
     this.setResource(files)
-  }
+  };
 }
 </script>
 
 <style lang="sass" scoped>
+input[type="file"]
+  display: none
 .ui.placeholder.segment
   width: 100%
 #dropZoneOuter
