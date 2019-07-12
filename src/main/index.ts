@@ -1,12 +1,11 @@
 const path = require('path')
 const { app, BrowserWindow } = require('electron')
 const waitOn = require('wait-on')
-
 const express = require('express')
 const getPort = require('get-port')
 const useragent = require('express-useragent')
 
-let win
+let win: any
 
 function loadContent(port = 3000) {
   win = new BrowserWindow({
@@ -16,6 +15,7 @@ function loadContent(port = 3000) {
     minHeight: 768,
     title: 'WebVTT Editor (beta)',
     webPreferences: {
+      devTools: process.env.NODE_ENV === 'development',
       textAreasAreResizable: false
     }
   })
@@ -32,12 +32,15 @@ app.on('ready', () => {
 
     // Installing devtools
     installExtension(VUEJS_DEVTOOLS).then(() => {
-      waitOn({ resources: [`http://localhost:3000`], log: true }, () => {
+      waitOn({
+        resources: [`http://localhost:3000`],
+        log: true
+      }, () => {
         loadContent()
       })
     })
   } else {
-    const server: any = express()
+    const server = express()
     server.use(useragent.express())
 
     // Rejecting requests from browsers

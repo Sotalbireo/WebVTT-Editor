@@ -9,7 +9,7 @@
       <template v-else>
         <FileGetter
           icon-type="video file"
-          placeholder="ここに参照したい動画ファイルをドロップ"
+          placeholder="動画ファイルをドロップ"
         />
       </template>
     </div>
@@ -23,7 +23,7 @@
       <template v-else>
         <FileGetter
           icon-type="closed captioning"
-          placeholder="ここに編集したい字幕ファイル(vtt)をドロップ"
+          placeholder="字幕ファイル(vtt)をドロップ"
         />
       </template>
     </div>

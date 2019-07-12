@@ -3,7 +3,8 @@
 		"outDir": "dist/main",
 		"module": "commonjs",
 		"target": "es2015",
-		"moduleResolution": "node",
+    "moduleResolution": "node",
+    "removeComments": true,
 		"strict": true
 	},
 	"include": [

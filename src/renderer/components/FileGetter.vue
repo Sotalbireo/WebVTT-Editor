@@ -1,7 +1,7 @@
 <template>
-  <div class="ui raised segment">
+  <div>
     <div
-      class="ui center aligned attached segment"
+      class="ui top attached compact segment"
       @dragover="handleDragOver"
       @drop="handleFileDrop"
     >
@@ -22,12 +22,15 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
+type readableFilesMimeTypes = "video/*" | "text/vtt"
+
 @Component
 export default class FileGetter extends Vue {
   @Prop({ type: String, default: 'ファイルをドロップ' })
-  readonly placeholder!: string;
-  @Prop({ type: String, default: 'file' }) readonly iconType!: string;
-  @Action setResource;
+  readonly placeholder!: string
+  @Prop({ type: String, default: 'file' }) readonly iconType!: string
+  @Prop({ type: String }) readonly readableFilesMimeTypes!: string
+  @Action setResource
 
   handleDragOver = (e) => {
     e.stopPropagation()
@@ -70,6 +73,12 @@ export default class FileGetter extends Vue {
     }
     this.setResource(files)
   };
+
+  isFileBeRequestedType = (type: readableFilesMimeTypes, file: File): boolean => {
+    const hasTypeWildcard = type.substr(-1) === '*'
+    const reToTypeCheck = new RegExp(hasTypeWildcard ? `^${type.substr(0, type.length - 1)}+*$` : `^${type}$`, 'i')
+    return reToTypeCheck.test(file.type)
+  }
 }
 </script>
 
@@ -78,13 +87,4 @@ input[type="file"]
   display: none
 .ui.placeholder.segment
   width: 100%
-#dropZoneOuter
-  padding: 10px
-  border: 1px solid #ccc
-#drop_zone
-  padding: 25px
-  border: 2px dashed #bbb
-  border-radius: 5px
-  text-align: center
-  color: #bbb
 </style>
