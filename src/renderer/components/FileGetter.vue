@@ -29,7 +29,7 @@ export default class FileGetter extends Vue {
   @Prop({ type: String, default: 'ファイルをドロップ' })
   readonly placeholder!: string
   @Prop({ type: String, default: 'file' }) readonly iconType!: string
-  @Prop({ type: String }) readonly readableFilesMimeTypes!: string
+  @Prop({ type: String }) readonly readableFilesMimeTypes!: readableFilesMimeTypes
   @Action setResource
 
   handleDragOver = (e) => {
@@ -60,24 +60,25 @@ export default class FileGetter extends Vue {
     e.preventDefault()
 
     const files = <FileList>e.target.files
-    const includeVideoFile = Array.from(files).some(f =>
-      /^video\//i.test(f.type)
-    )
-
-    if (includeVideoFile && files.length > 1) {
-      alert('動画ファイルは1つだけ選択してください')
+    if (!this.isFileBeRequestedType(this.readableFilesMimeTypes, files)) {
+      alert('対応したファイルを選択してください')
       return
     } else if (files.length > 1) {
-      alert('現在、字幕ファイルの同時読込は1件のみです')
+      alert('ファイルは1つだけ選択してください')
       return
     }
+
     this.setResource(files)
   };
 
-  isFileBeRequestedType = (type: readableFilesMimeTypes, file: File): boolean => {
+  isFileBeRequestedType = (type: readableFilesMimeTypes, file: File | FileList): boolean => {
     const hasTypeWildcard = type.substr(-1) === '*'
     const reToTypeCheck = new RegExp(hasTypeWildcard ? `^${type.substr(0, type.length - 1)}+*$` : `^${type}$`, 'i')
-    return reToTypeCheck.test(file.type)
+    if (file instanceof FileList) {
+      return [...Object.keys(file)].some(k => reToTypeCheck.test(file[k].type))
+    } else {
+      return reToTypeCheck.test(file.type)
+    }
   }
 }
 </script>
