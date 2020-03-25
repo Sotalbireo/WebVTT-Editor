@@ -1,21 +1,20 @@
 module.exports = {
-	root: true,
-	env: {
-		browser: true,
-    node: true,
-    es6: true
-	},
-	parserOptions: {
-		parser: '@typescript-eslint/parser',
-		ecmaVersion: 2018,
-		project: 'tsconfig.json'
-	},
-	extends: [
-		'@nuxtjs',
-	],
-	plugins: [
-		'@typescript-eslint'
-	],
-	rules: {
-	}
+  root: true,
+  env: {
+    browser: true,
+    node: true
+  },
+  extends: [
+    '@nuxtjs/eslint-config-typescript',
+    'prettier',
+    'prettier/vue',
+    'plugin:prettier/recommended',
+    'plugin:nuxt/recommended'
+  ],
+  plugins: [
+    'prettier'
+  ],
+  // add your custom rules here
+  rules: {
+  }
 }

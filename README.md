@@ -1,86 +1,22 @@
-# WebVTT-Editor rev2
+# webvtt-editor
 
-日本語りどみ
+> The editor to create WebVTT how subtitles at html5 video.
 
-**注意： 既知の不具合があったり十分にテストされていなかったりする不安定版です。**
+## Build Setup
 
-## これなん
+```bash
+# install dependencies
+$ yarn install
 
-YouTube などの動画に字幕として使える「WebVTT」ファイルデータを作ったり直したりするアプリケーション。
-機能は気まぐれで増える予定。
-いわゆる Electron アプリなのでそれなりに重い。
+# serve with hot reload at localhost:3000
+$ yarn dev
 
-## インストール方法
+# build for production and launch server
+$ yarn build
+$ yarn start
 
-### とりあえず使いたい人
+# generate static project
+$ yarn generate
+```
 
-[GitHub リリースページ](https://github.com/sotalbireo/webvtt-editor/releases)より、お手元の環境に合わせて最新版をダウンロードしてください。
-現在は Windows(x64) , macOS のみの配布です。
-
-### こだわりのある人
-
-任意のフォルダに `git clone` して `yarn` なりで依存パッケージを揃えてください。
-
-## つかいかた
-
-### キーボードショートカット
-
-#### 動画ビューワ
-
-|   key   | action            |
-| :-----: | ----------------- |
-|  Space  | 再生・一時停止    |
-| Shift-z | 動画を 10 分戻す  |
-|    z    | 動画を 1 分戻す   |
-|    x    | 動画を 10 秒戻す  |
-|    ←    | 動画を 1 秒戻す   |
-| Shift-← | コマ戻し（60fps） |
-| Shift-→ | コマ送り（60fps） |
-|    →    | 動画を 1 秒送る   |
-|    c    | 動画を 10 秒送る  |
-|    v    | 動画を 1 分送る   |
-| Shift-v | 動画を 10 分送る  |
-
-#### 字幕エディタ（Raw モード）
-
-テキストエリアにフォーカス当たってるとキーボードイベントが通常の文字入力に喰われるので、一度エリア外をクリックするなどしてからコマンド発火をお願いします。
-
-|  key   | action                                                 |
-| :----: | ------------------------------------------------------ |
-| Ctrl-s | 字幕ファイルを上書き保存して動画ビューワに反映させる   |
-|   y    | 直前に入力したキュー操作を取り消す（最大 10 回）       |
-|   j    | 字幕ファイル末尾に開始キューを打つ                     |
-|   k    | 字幕ファイル末尾に終了キューと開始キューを連続して打つ |
-|   l    | 字幕ファイル末尾に終了キューを打つ                     |
-
-## 動作確認環境
-
-以下の環境では動作を確認しています。
-
-- Windows 10 Home (1809)
-- macOS mojave (10.14.3)
-
-## 開発環境
-
-- macOS mojave (10.14.3)
-- Node ^10.15.1 (LTS)
-- yarn ^1.13.0
-
-## 将来の予定
-
-将来的に実装したい機能などは以下です。
-これらは今後の実装を保証するものではなく、また予告なく変更・削除の恐れがあります。
-
-- グラフィカルエディタ（とりあえず YouTube 風）
-- 別途用意した字幕原稿とのマージ
-- linter
-- タイムスタンプで整列
-- YouTube, Vimeo 等、動画プラットフォーム風字幕スタイルシート
-- 音声解析によるタイムスタンプ自動挿入
-- 字幕ファイルの新規作成に対応
-- YouTube からダウンロードした字幕（sbv 形式）をインポート＆コンバート
-- ほか、各種字幕形式のインポート・エクスポート対応
-
-## 参考
-
-- [WebVTT: The Web Video Text Tracks Format](https://w3c.github.io/webvtt/)
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
