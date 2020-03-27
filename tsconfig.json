@@ -1,38 +1,17 @@
 {
+  "extends": "@quasar/app/tsconfig-preset",
   "compilerOptions": {
-    "target": "es2018",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom"
-    ],
-    "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
+    "target": "es6",
     "strict": true,
-    "noEmit": true,
     "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "./src*"
-      ],
-      "@/*": [
-        "./*"
-      ]
-    },
     "types": [
-      "@types/node",
-      "@nuxt/types"
+      "quasar"
     ]
   },
-  "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
-  ]
+  "exclude": ["node_modules"]
 }

@@ -1,86 +1,49 @@
 {
   "name": "webvtt-editor",
-  "version": "0.3.0",
+  "version": "0.0.1",
   "description": "The editor to create WebVTT how subtitles at html5 video.",
-  "keywords": [
-    "html5",
-    "WebVTT",
-    "subtitles",
-    "electron"
-  ],
-  "license": "MIT",
+  "productName": "webvtt editor",
+  "cordovaId": "jp.siky.webvtt-editor",
+  "capacitorId": "",
   "author": "sasaky <athene609.cyl@gmail.com>",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/sotalbireo/webvtt-editor.git"
-  },
-  "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
-  "main": "dist/server",
-  "engines": {
-    "node": "^12.16.1"
-  },
   "scripts": {
-    "dev": "concurrently --prefix-colors bgWhite.black,bgCyan.black,bgGreen.black --kill-others --names wbp,nxt,elc \"webpack --watch --mode=development\" \"nuxt-ts\" \"cross-env NODE_ENV=development electron .\"",
-    "build": "cross-env NODE_ENV=production nuxt-ts build && electron-builder",
-    "generate": "nuxt-ts generate",
-    "start": "nuxt-ts start",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore ."
-  },
-  "build": {
-    "appId": "jp.siky.webvtt-editor",
-    "directories": {
-      "output": "build"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,vue}": "yarn lint",
-    "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "build": "quasar build",
+    "dev": "quasar dev -m electron",
+    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore ./",
+    "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^0.4.0",
-    "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/dotenv": "^1.4.0",
-    "nuxt": "^2.0.0"
+    "@quasar/extras": "^1.0.0",
+    "quasar": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-typescript": "^7.9.0",
-    "@nuxt/typescript-build": "^0.6.0",
-    "@nuxtjs/eslint-config-typescript": "^1.0.0",
-    "@nuxtjs/eslint-module": "^1.0.0",
-    "@nuxtjs/stylelint-module": "^3.1.0",
-    "@nuxtjs/tailwindcss": "^1.0.0",
-    "@types/electron-devtools-installer": "^2.2.0",
-    "@types/ip": "^1.1.0",
-    "@types/wait-on": "^4.0.0",
+    "@quasar/app": "^1.0.0",
+    "@quasar/cli": "^1.0.5",
+    "@quasar/quasar-app-extension-typescript": "^1.0.0-beta.2",
+    "@types/node": "11.9.5",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.1.0",
-    "concurrently": "^5.1.0",
-    "cross-env": "^7.0.2",
-    "electron": "^8.2.0",
-    "electron-builder": "^22.4.1",
+    "devtron": "^1.4.0",
+    "electron": "^8.0.1",
+    "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
-    "eslint": "^6.1.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-nuxt": ">=0.4.2",
-    "eslint-plugin-prettier": "^3.1.2",
-    "husky": "^4.0.0",
-    "ip": "^1.1.5",
-    "json-loader": "^0.5.7",
-    "lint-staged": "^10.0.0",
-    "prettier": "^1.19.1",
-    "sass": "^1.26.3",
-    "sass-loader": "^8.0.2",
-    "stylelint": "^10.1.0",
-    "ts-node": "^8.8.1",
-    "wait-on": "^4.0.1",
-    "webpack-cli": "^3.3.11"
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-vue": "^6.1.2",
+    "typescript": "^3.3.3"
+  },
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ],
+  "resolutions": {
+    "@babel/parser": "7.7.5"
   }
 }
