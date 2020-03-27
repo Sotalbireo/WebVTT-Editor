@@ -16,12 +16,12 @@
     "url": "http://github.com/sotalbireo/webvtt-editor.git"
   },
   "bugs": "http://github.com/sotalbireo/webvtt-editor/issues",
-  "main": "dist/entry",
+  "main": "dist/server",
   "engines": {
     "node": "^12.16.1"
   },
   "scripts": {
-    "dev": "concurrently --prefix-colors bgWhite.black,bgCyan.black,bgGreen.black --kill-others --names tsc,nxt,elc \"tsc --build tsconfig.main.json --watch\" \"nuxt-ts\" \"cross-env NODE_ENV=development electron .\"",
+    "dev": "concurrently --prefix-colors bgWhite.black,bgCyan.black,bgGreen.black --kill-others --names wbp,nxt,elc \"webpack --watch --mode=development\" \"nuxt-ts\" \"cross-env NODE_ENV=development electron .\"",
     "build": "cross-env NODE_ENV=production nuxt-ts build && electron-builder",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start",
@@ -49,14 +49,19 @@
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-typescript": "^7.9.0",
     "@nuxt/typescript-build": "^0.6.0",
     "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@nuxtjs/stylelint-module": "^3.1.0",
     "@nuxtjs/tailwindcss": "^1.0.0",
     "@types/electron-devtools-installer": "^2.2.0",
+    "@types/ip": "^1.1.0",
     "@types/wait-on": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.1.0",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "electron": "^8.2.0",
@@ -67,11 +72,15 @@
     "eslint-plugin-nuxt": ">=0.4.2",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.0.0",
+    "ip": "^1.1.5",
+    "json-loader": "^0.5.7",
     "lint-staged": "^10.0.0",
     "prettier": "^1.19.1",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "stylelint": "^10.1.0",
-    "wait-on": "^4.0.1"
+    "ts-node": "^8.8.1",
+    "wait-on": "^4.0.1",
+    "webpack-cli": "^3.3.11"
   }
 }

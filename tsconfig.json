@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
       "esnext",
@@ -14,13 +14,15 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
         "./src*"
       ],
       "@/*": [
-        "./src*"
+        "./*"
       ]
     },
     "types": [

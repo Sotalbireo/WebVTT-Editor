@@ -2,13 +2,17 @@
 
 import { app, BrowserWindow } from 'electron'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import ip from 'ip'
 import waitOn from 'wait-on'
-import nuxtConfig from 'nuxt.config'
+import nuxtConfig from '../../nuxt.config'
 
 let win: BrowserWindow | null = null
 
 function newWindow() {
-  const host = nuxtConfig.server?.host || 'localhost'
+  const host = (() => {
+    const _ = nuxtConfig.server?.host || 'localhost'
+    return _ === '0.0.0.0' ? ip.address() : _
+  })()
   const port = Number(nuxtConfig.server?.port) || 3000
   const resource = `//${host}:${port}`
 
@@ -19,7 +23,6 @@ function newWindow() {
     webPreferences: {
       contextIsolation: true,
       devTools: nuxtConfig.dev,
-      sandbox: true,
       textAreasAreResizable: false
     }
   })
@@ -45,7 +48,15 @@ function newWindow() {
         )
       })
   } else {
-    win.loadURL(resource)
+    waitOn(
+      {
+        resources: [resource],
+        log: true
+      },
+      () => {
+        win!.loadURL(resource)
+      }
+    )
   }
 }
 

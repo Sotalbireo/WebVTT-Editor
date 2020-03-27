@@ -1,11 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist/server",
+    "lib": [
+      "DOM",
+      "ES5",
+      "ScriptHost"
+    ],
     "removeComments": true,
-    "noEmit": false
-  },
-  "include": [
-    "./src/server/**/*.ts"
-  ]
+    "module": "commonjs",
+    "noEmit": true,
+    "target": "es5"
+  }
 }
